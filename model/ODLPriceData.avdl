@@ -1,0 +1,55 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a price, including all price parts like base price, taxes and discounts.
+ * A price kann belong to a product as well as to a complete shopping basket (or order). Rounding and
+ * price calculation MUST NOT be performed in frontend code!
+ */
+record ODLPriceData {
+
+  /**
+   * Net price excl. taxes, shipping or discounts (e.g. current net sales price of a product,
+   * net price of an order/basket, ...).
+   * @apiVersion 2
+   */
+  float net;
+
+  /**
+   * VAT part of net price.
+   * @apiVersion 2
+   */
+  float VAT;
+
+  /**
+   * Sum of all applied discounts for this price, incl. taxes.
+   * @apiVersion 2
+   */
+  float discount;
+
+  /**
+   * Optional base price display (e.g. price per 100ml or per piece) as string represenation
+   * (e.g. "39,00€/100ml"), incl. taxes. (only relevant for product/article prices).
+   * @apiVersion 2
+   */
+  string {union, null} base;
+
+  /**
+   * Original sales price, incl. taxes, excl. shipping and/or discounts.
+   * (only relevant for product/article prices)
+   * @apiVersion 2
+   */
+  float original;
+
+  /**
+   * Complete, current sales price (= net + VAT - discount), incl. taxes and _after_ applying discounts.
+   * @apiVersion 2
+   */
+  float total;
+
+  /**
+   * Current sales price before applying discounts (= net + VAT + discount), incl. taxes and _before_ applying discounts.
+   * (only relevant in basket/order if there are any active discounts)
+   * @apiVersion 3
+   */
+  float {union, null} totalBeforeDiscount;
+}

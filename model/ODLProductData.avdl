@@ -1,0 +1,100 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains detailed information about a single product (used e.g. on product details pages).
+ */
+record ODLProductData {
+
+  /**
+   * Internal ID of the product (i.e. Basisartikels), the internal-equivalent of the AONR.
+   */
+  string productId;
+
+  /**
+   * Internal ID of the variant, the internal-equivalent of the EAN.
+   */
+  string variantId;
+
+  /**
+   * AONR of the product.
+   */
+  string aonr;
+
+  /**
+   * EAN (European Article Number, vgl. http://de.wikipedia.org/wiki/European_Article_Number) of the product variant.
+   */
+  string ean;
+
+  /**
+  * Display name of this article.
+   */
+  string name;
+
+  /**
+    * Brand name of this article' associated brand.
+    */
+  string brand;
+
+  /**
+    * Brand data object assigned to this article. Replaces the textual
+    * "brand" property starting with API version 3 to allow deeper analysis
+    * and personalization based on brand information.
+    * @apiVersion 3
+    */
+  ODLBrandData brandData;
+
+  /**
+   * Current net sale price - excluding VAT, shipping or discounts.
+   * @deprecated
+   */
+  float price;
+
+  /**
+   * VAT part of 'price'
+   * @deprecated
+   */
+  float VAT;
+
+  /**
+   * Discount part of 'price' (sum of all applied discounts) excl. VAT.
+   * @deprecated
+   */
+  float discount;
+
+  /**
+   * Object with detailed information about price.
+   * @apiVersion 2
+   */
+  ODLPriceData priceData;
+
+  /**
+   * Availability info - true if article has stock, else false.
+   * @apiVersion 2
+   */
+  boolean inStock;
+
+  /**
+   * Name of organizational sales department this product belongs to.
+   * @apiVersion 2
+   */
+  string abteilungName;
+
+  /**
+   * Number of organizational sales department this product belongs to.
+   * @apiVersion 2
+   */
+  string abteilungNummer;
+
+  /**
+   * Color code of this variant (or 999 if unset)
+   * @apiVersion 2
+   */
+  string color;
+
+  /**
+   * Size code of this variant (or 99999 if unset)
+   * @apiVersion 2
+   */
+  string size;
+
+}

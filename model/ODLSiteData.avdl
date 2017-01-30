@@ -1,0 +1,24 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * This object contains information about the current shop environment/stage und is essential for the
+ * webtracking to assign data to a certain stage (production, integration, ...).
+ */
+record ODLSiteData {
+
+  /**
+  * ID of the current stage, valid values are jump_dev (local development environment),
+  * jump_inte (int/integration stage), jump_preprod (preproduction stage),
+  * jump_live (production stage).
+  * @deprecated
+  */
+  string id;
+
+  /**
+  * Name of the current stage as taken from the correct environment variable.
+  * Should replace the ODLSiteData.id starting from API version 2.
+  * @apiVersion 2
+  */
+  string stage;
+
+}

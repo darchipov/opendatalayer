@@ -1,0 +1,108 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Describes a customer who has completed an order. We don't separate between existing customers
+ * and guest orders.
+ */
+record ODLCustomerData {
+
+  /**
+   * Internal ID of this customer.
+   * @deprecated
+   */
+  string id;
+
+  /**
+   * Internal customer id from ORDR vertical.
+   */
+  string kundennummer;
+
+  /**
+   * Kundentyp: Gast ("0"), Neuanmeldung ("1")
+   * @FIXME: should be loginstatus instead
+   */
+  string kundentyp;
+
+  /**
+   * Enum with available customer types (currently misused as loginStatus for historical reasons).
+   *
+   * "returningGuest":  Gastebesteller, der vorher bereits als Gast bestellt hat
+   * "newGuest":        Gastbesteller, der erstmalig bestellt hat
+   * "registeredGuest": Gastbesteller, der aber auch schon als registrierter Kunde bestellt hat
+   * "registeredCustomer":  Bestandskunde, der bereits vor dieser Bestellung als registrierter Kunde bestellt hat
+   * "newCustomer":         Kunde, der zum ersten Mal als registrierter Kunde bestellt
+   * "guestReturningAsCustomer":  Kunde, der zum ersten Mal als registrierter Kunde bestellt aber vorher bereits Gastebesteller war
+   */
+  enum ODLCustomerDataCustomerType {
+    returningGuest,
+    newGuest,
+    registeredGuest,
+    registeredCustomer,
+    newCustomer,
+    guestReturningAsCustomer
+  }
+
+  /**
+   * Loginstatus of this customer.
+   */
+  ODLCustomerDataCustomerType loginstatus;
+
+  /**
+   * Customer's firstname.
+   */
+  string firstName;
+
+  /**
+   * Customer's lastname.
+   */
+  string firstName;
+
+  /**
+   * Customer's birthday (format "dd.MM")
+   */
+  string birthDate;
+
+  /**
+   * Customer's birth year (format "YYYY")
+   */
+  int birthYear;
+
+  /**
+   * Customer's e-mail address.
+   */
+  string email;
+
+  /**
+   * Customer's phone number.
+   */
+  union {null, string} phone;
+
+  /**
+   * Customer's age in years.
+   */
+  int age;
+
+  /**
+   * Enum with possible salutation values.
+   */
+  enum ODLCustomerDataSalutation {
+    MR,
+    MRS
+  }
+
+  /**
+   * Salutation according to gender ("MR" oder "MRS")
+   */
+  ODLCustomerDataSalutation salutation;
+
+  /**
+   * Customer's billing address.
+   */
+  ODLAddressData billingAddress;
+
+  /**
+   * Customer's delivery address (might be identical to billingAddress).
+   */
+  ODLAddressData shippingAddress;
+
+}

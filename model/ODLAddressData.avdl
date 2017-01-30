@@ -1,0 +1,46 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Describes an anonymized address record for a customer.
+ */
+record ODLAddressData {
+
+  /**
+   * Adresst type ("RA" for billing address or "LA" for delivery address).
+   */
+  string addressType;
+
+  /**
+   * Street (only for delivery or billing address, not for store delivery).
+   * @apiVersion 3
+   */
+  union {null, string} street;
+
+  /**
+   * House number (only for delivery or billing address, not for store delivery).
+   * @apiVersion 3
+   */
+  union {null, string} houseNr;
+
+  /**
+   * ZIP code of customer (e.g. "20148").
+   */
+  string zip;
+
+  /**
+   * City/town of customer (z.B. "Hamburch")
+   */
+  string town;
+
+  /**
+   * Internationale country code (according to ISO-3166) of the customer (e.g. "DE" für germany)
+   * @apiVersion 3
+   */
+  string countryCode;
+
+  /**
+    * Filialnummer für Filiallieferung (irrelevant bei anderen Lieferarten)
+    */
+  union {null, int} storeNumber;
+
+}

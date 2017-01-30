@@ -1,0 +1,13 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a login attempt (i.e. successful or not).
+ */
+record ODLLoginData {
+
+  /**
+  * Status of login attempt: 0=success, 1=failure, ...
+  */
+  int status;
+
+}

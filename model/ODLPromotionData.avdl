@@ -1,0 +1,31 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * The ODLPromotionData object is used to transport data about promotions (teasers,
+ * recommendations, etc.) to the ODL. Additionally one can provide product or
+ * brand data.
+ */
+record ODLPromotionData {
+
+  /**
+   * Internal name or identifier for this promotion. This might be used as display name in
+   * analytics tools.
+   */
+  string name;
+
+  /**
+   * Array with products associated with this promotion. This could be used to assign a product
+   * context to a given set of recommendations or a teaser with product relation. When used
+   * for recommendations, the order of the product objects in the Array SHOULD match the order
+   * of the visual appearance.
+   */
+  union {null, array<ODLProductData>} products;
+
+  /**
+   * Array with brands associated with this promotion (e.g. usable for brand bars or
+   * teasers with brands relation). When used for recommendations, the order of the
+   * brand objects in the Array SHOULD match the order of the visual appearance.
+   */
+  union {null, array<ODLBrandData>} brands;
+
+}

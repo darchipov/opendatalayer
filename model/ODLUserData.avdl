@@ -1,0 +1,15 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains pseudonymized information about an individual user. A user is a
+ * known customer who has an registered account on our website.
+ */
+record ODLUserData {
+
+  /**
+   * Unique user identifier (e.g. "123456-2764238-124-12412", ...),
+   * supply empty string for no logged in user.
+   */
+  string id;
+
+}

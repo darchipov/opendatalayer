@@ -1,0 +1,35 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * This object contains the basic information about a page call (e.g. Stage, Page and User data). It is
+ * absolutely mandatory on any page using the ODL.
+ */
+record ODLGlobalData {
+
+  /**
+  * Identifier for the current stage (current convention is either "jump_live", "jump_preprod"
+  * or "jump_int")
+  */
+  ODLSiteData site;
+
+  /**
+  * Information about the current page context
+  */
+  ODLPageData page;
+
+  /**
+  * Information about the current user (provide an empty object if not logged in).
+  */
+  ODLUserData user;
+
+  /**
+   * Category information (optional, only required for pages with category context).
+   */
+  union {null, ODLCategoryData} category;
+
+  /**
+   * Search information (optional, only required for pages with search context).
+   */
+  union {null, ODLSearchData} search;
+
+}

@@ -1,0 +1,27 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * The ODLBrandData object is used to indicate that a page context (e.g. a productdetail or a list
+ * of prodcuts) belongs to a specific brand. For the beginning we only support the "Dachmarke"
+ * feature as brand here, sub-brands (e.g. "LEGO Star Wars") might be extended in a later version
+ * of this spec.
+ */
+record ODLBrandData {
+
+  /**
+  * Displayname of the brand (e.g. "LEGO").
+  */
+  string name;
+
+  /**
+  * Internal reference key of this brand.
+  */
+  string brandKey;
+
+  /**
+  * Internal reference key of the sub-brand or *line* (e.g. "LEGO" would be a brand while
+  * "LEGO Star Wars" would a line).
+  */
+  string lineKey;
+
+}

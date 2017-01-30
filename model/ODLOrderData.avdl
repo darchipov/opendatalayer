@@ -1,0 +1,91 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Describes an order, including products, pricing, customer information, payment, loyalty program etc.
+ */
+record ODLOrderData {
+
+  /**
+   * Unique order number.
+   */
+  string id;
+
+  /**
+   * Array with products in this order.
+   */
+  array<ODLCartProductData> products;
+
+  /**
+   * Object containing detailed pricing information for this order.
+   */
+  ODLPriceData priceData;
+
+  /**
+   * Enumeration with available payment types as provided by ORDR vertical.
+   */
+  enum ODLOrderDataPaymentMethod {
+    invoice,
+    payPal,
+    creditCard,
+    sofortueberweisung,
+    cashOnDelivery,
+    giftcard,
+    inStore,
+    masterPass
+  }
+
+  /**
+   * Internal id of payment method that was used for this order.
+   */
+  ODLOrderDataPaymentMethod paymentMethod;
+
+  /**
+  * Indicates if this order has been partially or completely been paid using a giftcard.
+  */
+  booelan giftCardUsed;
+
+  /**
+   * Custoemr information record.
+   */
+  ODLCustomerData customer;
+
+  /**
+   * Coupon code used for this order, if any.
+   */
+  union {null, string} couponCode;
+
+  /**
+   * Flag that indicates whether the customer is a payback customer (determined based on received PB points).
+   */
+  boolean payback;
+
+  /**
+    * Number of payback points the customer received for this order.
+    */
+  int paybackPoints;
+
+  /**
+   * Internal campaign number of the applied campaign, if any.
+   */
+  union {null, array<string>} campaignNumbers;
+
+  /**
+   * Flag that inidicates whether this is a testing order and was not exported
+   * to OMS/AROMA. If true, this SHOULD NOT be exported to third parties. Please
+   * only provide this field on explicit testing orders.
+    */
+  union {null, boolean} testOrder;
+
+  /**
+   * Payment-type dependent fee (e.g. credit card fee)
+   * @apiVersion 3
+   */
+  float paymentCosts;
+
+  /**
+   * Number of payback points the customer would receive for this basket
+   * If no payback number was entered, this value HAS TO be set to zero.
+   */
+  int paybackPoints;
+
+}

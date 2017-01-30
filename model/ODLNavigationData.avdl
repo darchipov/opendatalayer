@@ -1,0 +1,16 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Datatype to transport a navigational position to the ODL.
+ */
+record ODLNavigationData {
+
+  /**
+  * Current location in navigation hierarchy, described using unique identifiers
+  * within the current tenant. For a navigation item "Women > Fashion > Jeans" the
+  * list should contain the three entries in the correct logical and hierarchical
+  * order, e.g. ['women', 'women/fashion', 'women/fashion/jeans'].
+  */
+  array<string> entries;
+
+}

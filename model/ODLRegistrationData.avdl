@@ -1,0 +1,13 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a registration attempt (i.e. successful or not).
+ */
+record ODLRegistrationData {
+
+  /**
+  * Status of registration attempt: 0=success, 1=failure, ...
+  */
+  int status;
+
+}

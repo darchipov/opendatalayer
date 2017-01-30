@@ -1,0 +1,16 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * The ODLNewsletterData carries information about a newsletter registration and
+ * contains an identifier that can be used to relate a user session to a
+ * newsletter registration.
+ */
+record ODLNewsletterData {
+
+  /**
+   * The unique identifier for the associated email newsletter recipient. Might be
+   * some sort of hash or UUID that is coupled to this individual email address.
+   */
+  string identifier;
+
+}

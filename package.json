@@ -1,0 +1,46 @@
+{
+  "name": "opendatalayer",
+  "version": "0.0.1",
+  "author": "Rico Pfaus <rico.pfaus@kaufhof.de>",
+  "description": "OpenDataLayer - standardize common data communication",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha tests/specs --compilers js:babel-register --recursive --color"
+  },
+  "keywords": [
+    "datalayer",
+    "tracking",
+    "tagmanager"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "avsc": "^4.1.9",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-register": "^6.14.0",
+    "chai": "^3.5.0",
+    "chai-avro": "^0.0.1",
+    "david": "^9.0.0",
+    "del": "^2.2.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb-base": "^10.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "gulp": "^3.8.10",
+    "gulp-bundle-manifest": "0.0.7",
+    "gulp-connect": "^5.0.0",
+    "gulp-download-stream": "0.0.13",
+    "gulp-eslint": "^3.0.1",
+    "gulp-nunjucks-render": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-rev": "^7.0.0",
+    "gulp-shell": "^0.5.2",
+    "mocha": "^3.0.2",
+    "phantomjs-prebuilt": "^2.1.5",
+    "sinon": "^1.17.0",
+    "systemjs": "^0.19.41",
+    "systemjs-builder": "^0.15.34",
+    "systemjs-plugin-babel": "0.0.17"
+  }
+}

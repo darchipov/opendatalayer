@@ -1,0 +1,46 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a single search query.
+ */
+record ODLSearchData {
+
+  /**
+   * Search term(s) as entered by the user.
+   */
+  string query;
+
+  /**
+   * Number of search result items the provided search query has returned.
+   */
+  int numHits;
+
+  /**
+   * List with EAN (European Article Number) of all products in this search result as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string eans;
+
+  /**
+   * List with AONR ("article obernummer" from WWS) of all products in this search result as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string aonrs;
+
+  /**
+   * List with internal prodcuts ids of all products in this search result as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string productIds;
+
+  /**
+   * List with internal variant ids of all products in this search result as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string variantIds;
+
+}

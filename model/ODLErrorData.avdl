@@ -1,0 +1,23 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a rendertime error (404, 500) that should be communicated to tracking/analytics.
+ */
+record ODLErrorData {
+
+  /**
+  * Type of error (e.g. HTTP status code)
+  */
+  int type;
+
+  /**
+  * URL where error occured (in 404 cases this would be the URL before redirecting to the homepage).
+  */
+  string url;
+
+  /**
+  * Human-readable error message;
+  */
+  string message;
+
+}

@@ -1,0 +1,47 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Contains information about a category. Used e.g. for affiliates and web analytics
+ * to identify categories.
+ */
+record ODLCategoryData {
+
+  /**
+   * ID of category (e.g. URL path)
+   */
+  string id;
+
+  /**
+   * Dsiplay name of the category (e.g. as shown in navigation).
+   */
+  string name;
+
+  /**
+   * List with EAN (European Article Number) of all products in a productlist as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string eans;
+
+  /**
+   * List with AONR ("article obernummer" from WWS) of all products in a productlist as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string aonrs;
+
+  /**
+   * List with internal prodcuts ids of all products in a productlist as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string productIds;
+
+  /**
+   * List with internal variant ids of all products in a productlist as
+   * comma-separated string. Limited to top 15 entries.
+   * @apiVersion 2
+   */
+  string variantIds;
+
+}

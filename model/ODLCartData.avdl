@@ -1,0 +1,50 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * Describes a shopping basket with products. This object has to be supplied even for empty baskets.
+ * In such cases all prices HAVE TO be set to `0` and `products` HAS TO contain an empty Array.
+ */
+record ODLCartData {
+
+  /**
+   * @deprecated
+   */
+  float price;
+
+  /**
+   * @deprecated
+   */
+  float VAT;
+
+  /**
+   * @deprecated
+   */
+  float discount;
+
+  /**
+   * Object conatining detailled pricing information.
+   */
+  ODLPriceData priceData;
+
+  /**
+   * @deprecated
+   */
+  float shipping;
+
+  /**
+   * Payment-type dependent fee (e.g. credit card fee)
+   * @apiVersion 3
+   */
+  float paymentCosts;
+
+  /**
+   * Number of payback points the customer would receive for this basket
+   * If no payback number was entered, this value HAS TO be set to zero.
+   */
+  int paybackPoints;
+
+  /**
+   * Array with products in the basket or empty array if no products have been added yet.
+   */
+  array<ODLCartProductData> products;
+}

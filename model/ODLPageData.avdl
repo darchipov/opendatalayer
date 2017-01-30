@@ -1,0 +1,19 @@
+@namespace("com.opendatalayer.model.types")
+
+/**
+ * This object contains information about an individual page call und associated information like pagetype,
+ * title, name etc.
+ */
+record ODLPageData {
+
+  /**
+  * Display name of this page, e.g. 'Homepage'.
+  */
+  string name;
+
+  /**
+  * Unique type identifier for this page, used for identification and segmentation purpose.
+  */
+  string type;
+
+}
