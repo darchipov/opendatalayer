@@ -5,9 +5,9 @@ between the frontend space (i.e. a website's frontend markup) and any third part
 on websites less painful and more standardized* while keeping the developers in full
 control of their frontend code.
 
-The system has been developed for the [online appearance of Galeria Kaufhof](http://www.kaufhof.de),
+The system has been developed for the [online shop of Galeria Kaufhof](http://www.kaufhof.de),
 the leading german warehouse company and part of the HBC group, and is in use for almost three years
-now. And, since we are so convinced that this is a good approach, we decided to open-source it.
+now. And, since we are all convinced that this is a good approach, we decided to open-source it.
 [Read more about reasoning and benefits](#) in the associated blog article.
 
 It is important to note that *ODL is no tag manager* in a classical way. However, it *can* (and
@@ -508,13 +508,18 @@ tracking of video and audio data.
 
 -----------------------
 
+## Road to 1.0
+- cleanup data model: strip deprecated fields, remove inheritance
+- create builder tool (based on systemjs-builder?)
+- Refactor ODL core implementation to a Promise-driven approach
+- Support dynamic bundling in ODL builder to split the package into smaller
+  files (e.g. one global file, one for article detail page, one for order completion page) to
+  save ressources
+
 ## Future plans
 - Create a crawler tool that scans an entire website's markup and validates the included
   ODL metatags against the associated Avro model files
 - Provide a gulp-opendatalayer plugin
 - Provide a grunt-opendatalayer plugin
-- Support dynamic bundling in ODL builder to split the package into smaller
-  files (e.g. one global file, one for article detail page, one for order completion page) to
-  save ressources
 - Currently ODL is heavily focused on e-commerce websites, we should add more universal types to
   support more content-driven websites, as we have some more real use cases and/or feedback
