@@ -16,8 +16,9 @@ class ODL {
     // module globals
     this.metaPrefix = 'odl:';           // prefix for metatags attributes
     this.broadcastQueue = [];           // queue with things that happen before initialize is called
-    this.pluginQueue = [];             // queue with plugins that are requested before initialize is called
-    this.plugins = {};                 // map with loaded plugin plugins
+    this.pluginQueue = [];              // queue with plugins that are requested before initialize is called
+    this.plugins = {};                  // map with loaded plugin plugins
+    this.modules = {};                  // map with module handles
     this.globalData = {};               // data storage
     this.globalConfig = {};             // configuration object (passed via odl:config)
     this.initialized = false;           // initialized flag (true, if core initialization is done)
@@ -305,13 +306,15 @@ class ODL {
    * @param  {Object}  config  (optional) configuration object containing per-plugin config
    *          that gets passed to the initialize call of the corresponding plugin. See header docs for more info.
    * @param  {Array<String>} localPlugins (optional) list with plugins to be loaded (including path)
+   * @param  {Object} mappings (optional) object literal with name->instance mappings for plugin modules
    */
-  initialize(data, ruleset, config, localPlugins) {
+  initialize(data, ruleset, config, localPlugins = [], mappings = {}) {
     let pluginsToLoad = [];
     if (this.initialized) {
       logger.warn('already initialized');
       return false;
     }
+    this.mappings = mappings;
     // this.globalData = data || null;
     this.globalConfig = config || {};
     // collect global data from document
