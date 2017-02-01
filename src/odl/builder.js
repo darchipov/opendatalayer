@@ -5,16 +5,17 @@
 function normalizePluginName (moduleName) {
   return moduleName.replace(/\//g, '_');
 }
+module.exports.normalizePluginName = normalizePluginName;
 
 /**
  * Generate a string with ES6 import statements based on the given configuration
  * @return {String}
  */
 function generateES6ImportString(config) {
-  let output = '';
+  var output = '';
   for (const name in config.plugins || {}) {
     if (!config.hasOwnProperty(name)) {
-      output += `import ${normalizePluginName(name)} from '${name}';\n`;
+      output += 'import ' + normalizePluginName(name) + ' from \'' + name + '\';\n';
     }
   }
   return output;
@@ -43,11 +44,11 @@ function validateConfiguration(config) {
  */
 function generateConfiguration(plugins) {
   // build configuration block
-  let output = 'var ODL_CONFIG = {\n';
+  var output = 'var ODL_CONFIG = {\n';
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
       const entry = plugins[name];
-      output += `  '${name}': ${JSON.stringify(entry.config)},\n`;
+      output += '  \'' + name + '\': ' + JSON.stringify(entry.config) + '\',\n';
     }
   }
   output += '};\n';
@@ -61,11 +62,11 @@ function generateConfiguration(plugins) {
  */
 function generateRuleset(plugins) {
   // build configuration block
-  let output = 'var ODL_RULES = {\n';
+  var output = 'var ODL_RULES = {\n';
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
       const entry = plugins[name];
-      output += `  '${name}': ${entry.rule},\n`;
+      output += '  \'' + name + '\': ' + entry.rule + '\',\n';
     }
   }
   output += '};\n';
@@ -80,10 +81,10 @@ function generateRuleset(plugins) {
  */
 function generateMappings(plugins) {
   // build configuration block
-  let output = 'var ODL_MAPPINGS = {\n';
+  var output = 'var ODL_MAPPINGS = {\n';
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
-      output += `  '${name}': ${normalizePluginName(name)},\n`;
+      output += '  \'' + name + '\': ' + normalizePluginName(name) + '\',\n';
     }
   }
   output += '};\n';
@@ -95,48 +96,18 @@ function generateMappings(plugins) {
  * @return {String}
  */
 function generateODLInitialization() {
-  let output = 'var odl = odl.initialize({}, ODL_RULES, ODL_CONFIG, {}, ODL_MAPPINGS);';
+  var output = 'var odl = odl.initialize({}, ODL_RULES, ODL_CONFIG, {}, ODL_MAPPINGS);';
   return output;
 }
 
-function buildPackage(config) {
+module.exports.buildPackage = function (config) {
   // create configuration module for ODL
   // ...
-  // fire up systemjs and build package
-  /*console.log('Building modules: ', modules);
-  const builder = new SystemJSBuilder();
-  builder.loadConfigSync('./systemjs.config.js');
-  return builder.buildStatic(
-    modules.join(' '),
-    `${config.outputPath}/odl.js`,
-    systemjsBuilderConf);*/
-}
+  // MAIN APPLICATION LOGIC
 
-// buildPackage(demoConfig);
-
-// MAIN APPLICATION LOGIC
-
-// TEST: example ODL builder configuration for testing
-const demoConfig = {
-  outputPath: 'build',
-  plugins: {
-    'odl/plugins/ga': {
-      config: {
-        gaProdId: 'UA-123456',
-      },
-      rule: true,
-    },
-    'odl/plugins/marin': {
-      config: {
-        accountId: 'abc-1234abcd',
-      },
-      rule: '(data) => data.page.type === \'homepage\'',
-    },
-  },
+  console.log(generateES6ImportString(config));
+  console.log(generateConfiguration(config.plugins));
+  console.log(generateRuleset(config.plugins));
+  console.log(generateMappings(config.plugins));
+  console.log(generateODLInitialization());
 };
-
-console.log(generateES6ImportString(demoConfig));
-console.log(generateConfiguration(demoConfig.plugins));
-console.log(generateRuleset(demoConfig.plugins));
-console.log(generateMappings(demoConfig.plugins));
-console.log(generateODLInitialization());
