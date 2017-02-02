@@ -257,7 +257,7 @@ is already available when the page is delivered from the backend
 application. This data gets then aggregated by the ODL and is passed
 to the plugin's `ìnitialize` method.
 
-#### Example of a global "pageload" event for a search result page
+#### Sending a global "pageload" event for a search result page
 
 ```html
 <meta name="odl:event" content='{
@@ -355,6 +355,9 @@ using Javascript. The following examples illustrate this feature:
   ...
 </div>
 ```
+
+### Recommendation tracking
+TODO ...
 
 ### Media tracking
 The media tracking through the ODL is based on a dedicated data type
