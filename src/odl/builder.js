@@ -48,7 +48,7 @@ function generateConfiguration(plugins) {
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
       const entry = plugins[name];
-      output += '  \'' + name + '\': ' + JSON.stringify(entry.config) + '\',\n';
+      output += '  \'' + name + '\': ' + JSON.stringify(entry.config) + ',\n';
     }
   }
   output += '};\n';
@@ -66,7 +66,7 @@ function generateRuleset(plugins) {
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
       const entry = plugins[name];
-      output += '  \'' + name + '\': ' + entry.rule + '\',\n';
+      output += '  \'' + name + '\': ' + entry.rule + ',\n';
     }
   }
   output += '};\n';
@@ -84,7 +84,7 @@ function generateMappings(plugins) {
   var output = 'var ODL_MAPPINGS = {\n';
   for (const name in plugins || {}) {
     if (plugins.hasOwnProperty(name)) {
-      output += '  \'' + name + '\': ' + normalizePluginName(name) + '\',\n';
+      output += '  \'' + name + '\': ' + normalizePluginName(name) + ',\n';
     }
   }
   output += '};\n';
@@ -101,13 +101,11 @@ function generateODLInitialization() {
 }
 
 module.exports.buildPackage = function (config) {
-  // create configuration module for ODL
-  // ...
-  // MAIN APPLICATION LOGIC
-
+  console.log('// TODO: concat and transpile ODL and plugins\n');
   console.log(generateES6ImportString(config));
   console.log(generateConfiguration(config.plugins));
   console.log(generateRuleset(config.plugins));
   console.log(generateMappings(config.plugins));
   console.log(generateODLInitialization());
+  console.log('\n// TODO: write resulting file to output');
 };
