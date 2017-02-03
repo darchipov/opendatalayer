@@ -126,16 +126,7 @@ function generateInitScript(config, targetFile) {
 module.exports.buildPackage = function (config) {
   var baseDir = config.baseDir || '/' + path.resolve(__dirname);
   var entryPoint = './build/__odl-init.js';
-  var concatFiles = [];
-
-  generateInitScript(config, baseDir + '/' + entryPoint);
-
-  console.log('Running builder in: ', baseDir);
-  console.log('Starting from entry point: ', baseDir + '/' + entryPoint);
-  console.log('Writing output to: ', baseDir + '/dist');
-
-  // configure an start webpack
-  webpack({
+  var webpackConfig = {
     entry: entryPoint,
     context: baseDir, // string
     output: {
@@ -155,10 +146,26 @@ module.exports.buildPackage = function (config) {
         },
       ],
     },
+    plugins: [],
     devtool: 'source-map', // enum
     target: 'web',
-  }, function (err, stats) {
-    // ...
+  };
+
+  // generate initialization code for ODL
+  generateInitScript(config, baseDir + '/' + entryPoint);
+
+  console.log('Running builder in: ', baseDir);
+  console.log('Starting from entry point: ', baseDir + '/' + entryPoint);
+  console.log('Writing output to: ', baseDir + '/dist');
+
+  // setup additional options
+  if (config.minify) {
+    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+  }
+
+  // configure and start webpack
+  webpack(webpackConfig, function (err, stats) {
+    // @FIXME: improve error handling
     if (err) {
       console.error(err.stack || err);
       if (err.details) {
