@@ -196,7 +196,7 @@ All [API methods](#) are available either through the AMD module or the global `
 object. In case of the window global you simply define an array with the function name followed
 by the function parameters. Then you push it to the global array. By extending the
 `push` method, ODL will execute the function as soon as it becomes available. The following two
-calls will the same effect:
+calls will have the same effect:
 
 ```javascript
 // global object API
@@ -408,7 +408,7 @@ and not on any business domain.
 
 The ODL datamodel is described using the [AVRO description language](https://avro.apache.org/docs/current/),
 this allows for machine processing and automation of validation processes. The full list of type definitions is
-now located under the `model` directory in this repositoy. Please point any external links to type definitions
+now located under the `model` directory in this repository. Please point any external links to type definitions
 to the respective file in that repository.
 
 ### Available data types

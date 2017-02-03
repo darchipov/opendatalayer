@@ -1,3 +1,7 @@
+var webpack = require('webpack');
+var path = require('path');
+var fs = require('fs');
+
 /**
  * Normalize a module name to an identifier that can be used as variable name.
  * Example: "foo/bar/example" would become "foo_bar_example"
@@ -12,10 +16,10 @@ module.exports.normalizePluginName = normalizePluginName;
  * @return {String}
  */
 function generateES6ImportString(config) {
-  var output = '';
+  var output = 'import odl from \'../src/odl/ODL\';\n';
   for (const name in config.plugins || {}) {
     if (!config.hasOwnProperty(name)) {
-      output += 'import ' + normalizePluginName(name) + ' from \'' + name + '\';\n';
+      output += 'import ' + normalizePluginName(name) + ' from \'../src/' + name + '\';\n';
     }
   }
   return output;
@@ -96,16 +100,76 @@ function generateMappings(plugins) {
  * @return {String}
  */
 function generateODLInitialization() {
-  var output = 'var odl = odl.initialize({}, ODL_RULES, ODL_CONFIG, {}, ODL_MAPPINGS);';
+  var output = 'odl.initialize({}, ODL_RULES, ODL_CONFIG, {}, ODL_MAPPINGS);';
   return output;
 }
 
+/**
+ * Generate the complete ODL initscript that contains import statements for all required
+ * plugins and the odl.init call.
+ * @param config  {Object}  ODL configuration object as passed to odl.init
+ * @param targetFilename  {String}  absolute path (incl. filename) to write the init script to
+ */
+function generateInitScript(config, targetFile) {
+  var output = '';
+
+  // generate main code
+  output += generateES6ImportString(config) + '\n';
+  output += generateConfiguration(config.plugins);
+  output += generateRuleset(config.plugins);
+  output += generateMappings(config.plugins) + '\n';
+  output += generateODLInitialization();
+
+  return fs.writeFileSync(targetFile, output);
+}
+
 module.exports.buildPackage = function (config) {
-  console.log('// TODO: concat and transpile ODL and plugins\n');
-  console.log(generateES6ImportString(config));
-  console.log(generateConfiguration(config.plugins));
-  console.log(generateRuleset(config.plugins));
-  console.log(generateMappings(config.plugins));
-  console.log(generateODLInitialization());
-  console.log('\n// TODO: write resulting file to output');
+  var baseDir = config.baseDir || '/' + path.resolve(__dirname);
+  var entryPoint = './build/__odl-init.js';
+  var concatFiles = [];
+
+  generateInitScript(config, baseDir + '/' + entryPoint);
+
+  console.log('Running builder in: ', baseDir);
+  console.log('Starting from entry point: ', baseDir + '/' + entryPoint);
+  console.log('Writing output to: ', baseDir + '/dist');
+
+  // configure an start webpack
+  webpack({
+    entry: entryPoint,
+    context: baseDir, // string
+    output: {
+      filename: './dist/opendatalayer.js', // string
+      library: 'opendatalayer', // string,
+      libraryTarget: 'umd', // enum
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.js?$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'babel-loader',
+          query: {
+            presets: ['es2015'],
+          },
+        },
+      ],
+    },
+    devtool: 'source-map', // enum
+    target: 'web',
+  }, function (err, stats) {
+    // ...
+    if (err) {
+      console.error(err.stack || err);
+      if (err.details) {
+        console.error(err.details);
+      }
+    } else {
+      console.log('DONE: ');
+      console.log(stats.toString({
+        chunks: false,  // Makes the build much quieter
+        colors: true,    // Shows colors in the console
+      }));
+    }
+  });
 };
