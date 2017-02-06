@@ -1,6 +1,6 @@
 import window from './lib/globals/window';
 import Logger from './lib/logger';
-import cookie from 'gk/vendor/cookie';
+import cookie from './lib/cookie';
 
 const logger = new Logger('odl/ODL');
 
@@ -124,7 +124,8 @@ class ODL {
     } else {
       // initialize plugin to null so we know it's loading (@FIXME: use object with status property in plugins)
       this.plugins[pluginId] = null;
-      window.require([pluginId], (Plugin) => {
+      // window.require([pluginId], (Plugin) => {
+      ((Plugin) => {
         logger.log(`plugin '${pluginId}' newly loaded`);
         // if not loaded in the meantime: construct plugin, pass data/config, store reference
         if (!this.plugins[pluginId]) {
@@ -146,7 +147,7 @@ class ODL {
         if (typeof callback === 'function') {
           callback(this.plugins[pluginId]);
         }
-      });
+      })(this.mappings[pluginId]);
     }
     return false;
   }

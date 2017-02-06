@@ -57,7 +57,7 @@ export default class Logger {
   _setAllowedMethods(preference) {
     this.allowedMethods = {};
     let active = false;
-    for (level in ['log', 'warn', 'error']) {
+    for (let level in ['log', 'warn', 'error']) {
       if (level === preference) {
         active = true;
       }
