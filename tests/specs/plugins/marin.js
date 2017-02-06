@@ -2,12 +2,12 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
-import './../../../systemjs.config';
+import '../../../systemjs.config';
 import mockModule from './../../_mockModule';
 import * as odlDataTypes from './../../mocks/odlDataTypes';
 
-describe('ba/lib/odl/aff/marin', () => {
-  let [window, odlApi, odlDataMock, odlConfigMock, Service, pixelHelperApi, loggerSpy] = [];
+describe('odl/plugins/marin', () => {
+  let [window, odlApi, odlDataMock, odlConfigMock, Service, domHelperApi, loggerSpy] = [];
 
   beforeEach((done) => {
     window = { _mTrack: [] };
@@ -15,12 +15,12 @@ describe('ba/lib/odl/aff/marin', () => {
     odlApi = {};
     odlDataMock = odlDataTypes.getODLGlobalDataStub();
     odlConfigMock = { accountId: 'bla1234' };
-    pixelHelperApi = { addScript: sinon.stub() };
+    domHelperApi = { addScript: sinon.stub() };
     loggerSpy = { log: sinon.spy(), warn: sinon.spy() };
     // register mocks
     mockModule('odl/lib/globals/window', window);
     mockModule('odl/lib/logger', () => loggerSpy);
-    mockModule('odl/lib/pixelHelper', pixelHelperApi);
+    mockModule('odl/lib/domHelper', domHelperApi);
     // clear module first
     System.delete(System.normalizeSync('odl/plugins/marin'));
     System.import('odl/plugins/marin').then(m => {
@@ -37,7 +37,7 @@ describe('ba/lib/odl/aff/marin', () => {
 
   it('should append the marin pixel to the DOM', () => {
     new Service(odlApi, odlDataMock, odlConfigMock);
-    return sinon.assert.calledWith(pixelHelperApi.addScript, `//tracker.marinsm.com/tracker/async/${odlConfigMock.accountId}.js`);
+    return sinon.assert.calledWith(domHelperApi.addScript, `//tracker.marinsm.com/tracker/async/${odlConfigMock.accountId}.js`);
   });
 
   it("should add the common 'anonymizeIp' flags for any pagetype", () => {

@@ -1,6 +1,6 @@
 import window from '../lib/globals/window';
 import Logger from '../lib/logger';
-import * as pixelHelper from '../lib/pixelHelper';
+import * as domHelper from '../lib/domHelper';
 
 const logger = new Logger('odl/plugins/marin');
 
@@ -34,6 +34,6 @@ export default class Marin {
     }
 
     // send tracking request
-    pixelHelper.addScript(`//tracker.marinsm.com/tracker/async/${config.accountId}.js`, false);
+    domHelper.addScript(`//tracker.marinsm.com/tracker/async/${config.accountId}.js`, false);
   }
 }

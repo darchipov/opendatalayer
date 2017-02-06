@@ -40,6 +40,9 @@
     "mocha": "^3.0.2",
     "phantomjs-prebuilt": "^2.1.5",
     "sinon": "^1.17.0",
+    "systemjs": "^0.19.41",
+    "systemjs-builder": "^0.15.34",
+    "systemjs-plugin-babel": "0.0.17",
     "webpack": "^2.2.1"
   }
 }

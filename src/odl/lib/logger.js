@@ -1,6 +1,4 @@
-'use strict'
-
-import console from './../globals/console';
+import console from './globals/console';
 
 /**
  * Logging module that uses `console.log` under the hood.
