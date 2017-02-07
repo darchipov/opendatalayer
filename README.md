@@ -162,14 +162,15 @@ However, it is still possible to dynamically load plugins through ODL's script A
 one could even build a classical, UI-driven tag management system on top of the ODL standard.
 
 ### 3. Include ODL in your website
-You can directly include ODL via script tag and then access the API through a global array:
+You can directly include ODL via script tag and then access the API using the method queue pattern,
+which essentially means simply pushing method names and attributes to a global array:
 
 ```html
 <script src="/some/path/to/mywebsite-odl.1.123.js" type="text/javascript" async></script>
 <script>
 (function() {
-  window._odl = window._odl || [];
-  window._odl.push(['load', function (odl) {
+  window._odlq = window._odlq || [];
+  window._odlq.push(['load', function (odl) {
     odl.broadcast('foo', 'bar');
   }]);
 }());
@@ -192,17 +193,18 @@ detail in the [Events documentation](#simplified-markup-notation)). Also the cal
 `odl.init` is intentionally left out here. When using odl-builder the ODL is automatically
 initialized behind the scenes.
 
-All [API methods](#) are available either through the AMD module or the global `window._odl`
-object. In case of the window global you simply define an array with the function name followed
+All [API methods](#) are available either through the AMD module or the global `window._odlq`
+method queue ([more details about the method queue pattern](http://www.lognormal.com/blog/2012/12/12/the-script-loader-pattern/#the_method_queue_pattern)).
+In case of the window global you simply define an array with the function name followed
 by the function parameters. Then you push it to the global array. By extending the
-`push` method, ODL will execute the function as soon as it becomes available. The following two
-calls will have the same effect:
+`push` method, ODL will execute the function as soon as it becomes available.
+The following two calls will have the same effect:
 
 ```javascript
-// global object API
-window._odl.push(['broadcast', { foo: 'bar' }]);
+// method-queue-style API
+window._odlq.push(['broadcast', { foo: 'bar' }]);
 
-// AMD style
+// AMD-style API
 require(['opendatalayer'], function (odl) {
   odl.broadcast({ foo: 'bar' });
 })
