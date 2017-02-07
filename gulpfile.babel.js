@@ -5,7 +5,7 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const shell = require('gulp-shell');
 const del = require('del');
-const argv = require('yargs');
+const argv = require('yargs').argv;
 const path = require('path');
 
 const config = {

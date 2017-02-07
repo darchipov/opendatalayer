@@ -43,7 +43,7 @@ describe('odl/ODL', () => {
     };
     // register mocks
     mockModule('odl/lib/globals/window', windowSpy);
-    mockModule('gk/vendor/cookie', cookieSpy);
+    mockModule('odl/lib/cookie', cookieSpy);
     mockModule('odl/lib/logger', () => loggerSpy);
     mockModule('odl/plugins/mock', odlPluginMock);
     // clear module first

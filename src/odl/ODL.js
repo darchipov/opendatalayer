@@ -33,7 +33,7 @@ class ODL {
   isTestModeActive() {
     if (cookie.get('__odltest__')) {
       if (window.location.search.match(/__odltest__=0/gi)) {
-        cookie.remove('__odltest__');
+        cookie.remove('__odltest__', { path: '/' });
         return false;
       }
       return true;
