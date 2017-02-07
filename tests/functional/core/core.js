@@ -3,7 +3,7 @@ import { assert } from 'chai';
 
 const getODLData = ClientFunction(() => {
   return new Promise((resolve, reject) => {
-    let retries = 10000;
+    let retries = 100;
     const checkODL = () => {
       if (typeof window._odl !== 'undefined' && window._odl.isReady()) {
         resolve(window._odl.getData());
@@ -18,10 +18,10 @@ const getODLData = ClientFunction(() => {
   });
 });
 
-fixture `Example page`
+fixture `Core functionality`
     .page('http://localhost:17771/core/core.html');
 
-test('Check property of element', async t => {
+test('Check DAL data contents', async t => {
   const odlData = await getODLData();
   assert.deepEqual(odlData.site, { id: "test" });
 });
