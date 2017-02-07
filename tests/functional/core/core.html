@@ -1,6 +1,6 @@
 <html>
 <head>
-  <script src="../../dist/opendatalayer.js" type="text/javascript" async></script>
+  <script src="/.tmp/opendatalayer.js" type="text/javascript" async></script>
 </head>
 <body>
 Testbed for ODL integration
@@ -22,7 +22,8 @@ Testbed for ODL integration
 /** Case: init
  * We init the ODL here and send a custom event via the window API.
  * Within our test framework we then check if the event is properly
- * getting broadcasted to our testing plugin.
+ * getting broadcasted to our testing plugin and the received data
+ * is as expected.
  */
 window._odlq = window._odlq || [];
 window._odlq.push(['onLoad', function (odl) {

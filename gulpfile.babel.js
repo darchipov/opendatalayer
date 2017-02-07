@@ -4,6 +4,7 @@
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const shell = require('gulp-shell');
+const connect = require('gulp-connect');
 const del = require('del');
 const argv = require('yargs').argv;
 const path = require('path');
@@ -29,7 +30,7 @@ gulp.task('lint', () => {
     .pipe(eslint.failOnError());
 });
 
-// use ODL builder to build and package
+// use local ODL builder to build and package ODL with our testing plugins
 gulp.task('test:package', () => {
   const odlBuilder = require('./src/odl/builder');
 
@@ -54,8 +55,28 @@ gulp.task('test:package', () => {
   });
 });
 
+gulp.task('test:serve', () => {
+  connect.server({
+    root: 'tests/functional',
+    port: 17771,
+  });
+});
+
+gulp.task('test:prepare', () => {
+  gulp.src('dist/*.js')
+    .pipe(gulp.dest('tests/functional/.tmp'));
+});
+
 gulp.task('test:unit', shell.task([
   `./node_modules/.bin/mocha tests/specs${argv.only ? `/${argv.only}` : ''} --compilers js:babel-register --recursive --color`,
 ]));
+
+gulp.task('test:functional', ['test:serve', 'test:prepare'], () => {
+  const spawn = require('child_process').spawn;
+  const testcafe = spawn('./node_modules/.bin/testcafe', ['chrome', 'tests', '-S', '--screenshots=./screenshots'], { stdio: 'inherit' });
+  testcafe.on('close', () => {
+    connect.serverClose();
+  });
+});
 
 gulp.task('test', ['test:unit', 'test:functional']);
