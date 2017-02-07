@@ -8,13 +8,7 @@ describe('odl/lib/cookie', () => {
   let [cookieHelper, windowSpy] = [];
 
   beforeEach(() => {
-    windowSpy = {
-      bla: 'blubb',
-      document: {
-        cookie: '',
-      },
-    };
-    // register mocks
+    windowSpy = { document: { cookie: '' } };
     mockModule('odl/lib/globals/window', windowSpy);
     System.delete(System.normalizeSync('odl/lib/cookie'));
     return System.import('odl/lib/cookie').then((m) => {
