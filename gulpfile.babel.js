@@ -73,7 +73,7 @@ gulp.task('test:unit', shell.task([
 
 gulp.task('test:functional', ['test:serve', 'test:prepare'], () => {
   const spawn = require('child_process').spawn;
-  const testcafe = spawn('./node_modules/.bin/testcafe', ['chrome', 'tests', '-S', '--screenshots=./screenshots'], { stdio: 'inherit' });
+  const testcafe = spawn('./node_modules/.bin/testcafe', ['phantomjs', 'tests', '-S', '--screenshots=./screenshots'], { stdio: 'inherit' });
   testcafe.on('close', () => {
     connect.serverClose();
   });

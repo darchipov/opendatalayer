@@ -41,6 +41,7 @@
     "systemjs-builder": "^0.15.34",
     "systemjs-plugin-babel": "0.0.17",
     "testcafe": "^0.12.1",
+    "testcafe-browser-provider-phantomjs": "^1.0.0",
     "webpack": "^2.2.1"
   }
 }
