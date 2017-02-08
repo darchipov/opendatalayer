@@ -134,7 +134,6 @@ class ODL {
     } else {
       // initialize plugin to null so we know it's loading (@FIXME: use object with status property in plugins)
       this.plugins[pluginId] = null;
-      // window.require([pluginId], (Plugin) => {
       this.loadPlugin(pluginId, (Plugin) => {
         logger.log(`plugin '${pluginId}' newly loaded`);
         // if not loaded in the meantime: construct plugin, pass data/config, store reference

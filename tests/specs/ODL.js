@@ -225,7 +225,7 @@ describe('odl/ODL', () => {
 
       it('should load a given plugin by its name [odl/plugins/mock]', (done) => {
         // init without plugins, then load plugin manually
-        odl.initialize(odlDataMock);
+        odl.initialize(odlDataMock, {}, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.loadPlugins(['odl/plugins/mock'], () => {
           assert.isObject(odl.getPlugin('odl/plugins/mock'));
           done();
@@ -234,7 +234,7 @@ describe('odl/ODL', () => {
 
       it('should notify a callback when a single plugin is available using getPlugin', (done) => {
         // init without plugins, load plugin manually
-        odl.initialize(odlDataMock);
+        odl.initialize(odlDataMock, {}, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           sinon.assert.calledWith(loggerSpy.log, sinon.match('newly loaded'));
           assert.equal(plugin.__type__, 'Mock');
@@ -244,7 +244,7 @@ describe('odl/ODL', () => {
 
       it('should notify a callback when an already available plugin is requested using getPlugin', (done) => {
         // init with plugin, then try to load plugin manually
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           sinon.assert.calledWith(loggerSpy.log, sinon.match('already available'));
           assert.equal(plugin.__type__, 'Mock');
@@ -253,7 +253,7 @@ describe('odl/ODL', () => {
       });
 
       it('should set a ready flag once all plugins have been initialized', (done) => {
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         // poll until _odl.ready is set or timeout reached
         let tries = 10;
         function isODLReady() {
@@ -278,7 +278,7 @@ describe('odl/ODL', () => {
       });
 
       it('should pass a self-reference to its plugins', (done) => {
-        odl.initialize(odlDataMock);
+        odl.initialize(odlDataMock, {}, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           assert.equal(plugin.odl, odl);
           done();
@@ -294,7 +294,7 @@ describe('odl/ODL', () => {
       });
 
       it('should return true when the requested plugin is loaded', () => {
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         assert.isTrue(odl.hasPlugin('odl/plugins/mock'));
       });
 
@@ -307,10 +307,8 @@ describe('odl/ODL', () => {
       let mockPlugin;
 
       beforeEach((done) => {
-        // init without plugins
-        odl.initialize(odlDataMock, {});
-        // load plugin manually
-        windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
+        // init and pass in custom plugin mapping
+        odl.initialize(odlDataMock, {}, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', () => {
           mockPlugin = odl.getPlugin('odl/plugins/mock');
           sinon.stub(mockPlugin, 'handleEvent');
@@ -333,9 +331,9 @@ describe('odl/ODL', () => {
 
     describe('queueing', () => {
       it('should queue a message that is sent BEFORE ODL.initialize and broadcast it later', (done) => {
-        windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
+        // windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
         odl.broadcast('testevent', { foo: 'bar' });
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           assert.deepEqual(plugin.getEvents('testevent'), { foo: 'bar' });
           done();
@@ -346,7 +344,7 @@ describe('odl/ODL', () => {
         // artificially delay require calls
         windowSpy.require = (pluginId, callback) => setTimeout(() => callback(odlPluginMock), 250);
         // call initialize and broadcast event before plugin is loaded
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.broadcast({ name: 'testevent', data: { foo: 'bar' } });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           assert.deepEqual(plugin.getEvents('testevent'), { foo: 'bar' });
@@ -360,7 +358,7 @@ describe('odl/ODL', () => {
           assert.equal(plugin.__type__, 'Mock');
           done();
         });
-        odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
+        odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
       });
     });
 
