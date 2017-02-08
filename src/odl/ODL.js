@@ -339,6 +339,8 @@ class ODL {
     // collect event data from document and send events to plugins
     logger.log(`scanning for ${this.metaPrefix}event markup`);
     this.scanForEventMarkup();
+    // install method queue
+    utils.createMethodQueueHandler(window, '_odlq', this);
     return true;
   }
 

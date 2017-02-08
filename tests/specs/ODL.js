@@ -9,11 +9,7 @@ import mockModule from './../_mockModule';
 import odlPluginMock from './../mocks/ODLPluginMock';
 
 describe('odl/ODL', () => {
-  let elementSpy;
-  let windowSpy;
-  let cookieSpy;
-  let loggerSpy;
-  let odlDataMock;
+  let [elementSpy, windowSpy, cookieSpy, loggerSpy, utilsSpy, odlDataMock] = [];
 
   sinon.log = message => console.log(message);
 
@@ -35,6 +31,10 @@ describe('odl/ODL', () => {
       },
     };
     loggerSpy = { log: sinon.spy(), warn: sinon.spy(), error: sinon.spy() };
+    utilsSpy = {
+      collectMetadata: sinon.stub(),
+      createMethodQueueHandler: sinon.spy(),
+    };
     // create mocks
     odlDataMock = {
       page: { type: 'unittest', name: 'Testpage' },
@@ -45,6 +45,7 @@ describe('odl/ODL', () => {
     mockModule('odl/lib/globals/window', windowSpy);
     mockModule('odl/lib/cookie', cookieSpy);
     mockModule('odl/lib/logger', () => loggerSpy);
+    mockModule('odl/lib/utils', utilsSpy);
     mockModule('odl/plugins/mock', odlPluginMock);
     // clear module first
     System.delete(System.normalizeSync('odl/ODL'));
@@ -159,6 +160,11 @@ describe('odl/ODL', () => {
         odl.initialize(odlDataMock, {}, {}, ['local/plugin']);
         sinon.assert.calledWith(odl.loadPlugin, 'local/plugin');
         odl.loadPlugin.restore();
+      });
+
+      it('should create a method queue handler in window during odl.initialize', () => {
+        odl.initialize(odlDataMock);
+        sinon.assert.calledWith(utilsSpy.createMethodQueueHandler, windowSpy, '_odlq', odl);
       });
     });
 
