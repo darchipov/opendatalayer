@@ -528,3 +528,4 @@ tracking of video and audio data.
 - Provide a grunt-opendatalayer plugin
 - Currently ODL is heavily focused on e-commerce websites, we should add more universal types to
   support more content-driven websites, as we have some more real use cases and/or feedback
+- Add integrated testing tool that automatically tests plugins for availability based on their configuration

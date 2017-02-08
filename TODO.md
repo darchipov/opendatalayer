@@ -7,6 +7,7 @@
 - remove ODL.collectIdentityDataFromCookies and add ODL.addData to be able to set identity data from outside the core
 - move metaData stuff from odl/ODL to odl/lib/utils
 - stabilize ODL builder
+- test real-world usecase of builder (i.e. when included as npm dependency)
 
 ## nice-to-have
 - port ODL core to Promise-driven API
