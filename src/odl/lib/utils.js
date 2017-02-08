@@ -52,7 +52,37 @@ function collectMetadata(name, callback, context = null, data = {}) {
   return data;
 }
 
+/**
+ * Create a method queue handler within the provided target object. It can be used to
+ * communicate with the provided API without the need to directly access the module.
+ *
+ * @param context     {Object}  object scope in which to create handler (e.g. window)
+ * @param queueName   {String}  identifier to use as method queue name (e.g. "_odlq")
+ * @param apiObj      {Object}  object scope to use for calling the provided methods on
+ */
+function createMethodQueueHandler(context, queueName, api = {}) {
+  function _mqExec(_api, _arr) {
+    if (typeof _api[_arr[0]] === 'function') {
+      _api[_arr[0]].apply(_api, _arr.splice(1));
+    } else {
+      throw new Error(`method "${_arr[0]}" not found in ${_api}`);
+    }
+  }
+  // define or get the method queue array
+  const mq = typeof context[queueName] !== 'undefined' ? context[queueName] : [];
+  // execute pending calls
+  while (mq.length) {
+    _mqExec(api, mq.shift());
+  }
+  // override push method
+  mq.push = (arr) => {
+    _mqExec(api, arr);
+  };
+}
+
+// public API
 export default {
   extend,
   collectMetadata,
+  createMethodQueueHandler,
 };

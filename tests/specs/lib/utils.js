@@ -92,7 +92,152 @@ describe('odl/lib/utils', () => {
       });
     });
   });
-  // TODO:
-  // extend
+
+  describe('method queue', () => {
+    let [contextObj, apiObj] = [];
+
+    beforeEach(() => {
+      contextObj = { _testq: [] };
+      apiObj = {
+        method1: sinon.spy(),
+        method2: sinon.spy(),
+      };
+    });
+
+    it('should recognize and execute methods that have been added BEFORE initialization', () => {
+      contextObj._testq.push(['method1', 123, 'foo']);
+      contextObj._testq.push(['method2', { data: 'test' }]);
+      utils.createMethodQueueHandler(contextObj, '_testq', apiObj);
+      sinon.assert.calledWith(apiObj.method1, 123, 'foo');
+      sinon.assert.calledWith(apiObj.method2, { data: 'test' });
+    });
+
+    it('should recognize and execute methods that have been added AFTER initialization', () => {
+      utils.createMethodQueueHandler(contextObj, '_testq', apiObj);
+      contextObj._testq.push(['method1', 123, 'foo']);
+      contextObj._testq.push(['method2', { data: 'test' }]);
+      sinon.assert.calledWith(apiObj.method1, 123, 'foo');
+      sinon.assert.calledWith(apiObj.method2, { data: 'test' });
+    });
+
+    it('should throw an error on methods that are not available in API object', () => {
+      utils.createMethodQueueHandler(contextObj, '_testq', apiObj);
+      assert.throw(() => {
+        contextObj._testq.push(['kaboom', 'bazinga!']);
+      }, 'method "kaboom" not found');
+    });
+  });
+
+  describe('extend', () => {
+    it('should extend a given flat object with another flat object', () => {
+      const obj1 = {
+        prop1: 'val1',
+        prop2: 42,
+        prop3: true,
+        prop4: 20.16,
+      };
+      const obj2 = {
+        prop4: 77.123,
+        propNew1: 'newVal1',
+        propNew2: 71,
+      };
+      assert.deepEqual(utils.extend(obj1, obj2), {
+        prop1: 'val1',
+        prop2: 42,
+        prop3: true,
+        prop4: 77.123,
+        propNew1: 'newVal1',
+        propNew2: 71,
+      });
+    });
+
+    it('should deep-extend a given flat object with a nested object', () => {
+      const obj1 = {
+        prop1: 'val1',
+        prop2: 'val2',
+      };
+      const obj2 = {
+        propNew1: 'newVal1',
+        propNew2: {
+          propNewDeep1: 'newDeepVal1',
+          propNewDeep2: 42,
+          propNewDeep3: true,
+          propNewDeep4: 20.16,
+        },
+        propArray: [
+          1, 2, 3, 4,
+        ],
+      };
+      assert.deepEqual(utils.extend(obj1, obj2), {
+        prop1: 'val1',
+        prop2: 'val2',
+        propNew1: 'newVal1',
+        propNew2: {
+          propNewDeep1: 'newDeepVal1',
+          propNewDeep2: 42,
+          propNewDeep3: true,
+          propNewDeep4: 20.16,
+        },
+        propArray: [
+          1, 2, 3, 4,
+        ],
+      });
+    });
+
+    it('should deep-extend a given nested object with another nested object and deep-overwrite members', () => {
+      const obj1 = {
+        prop1: 'val1',
+        prop2: {
+          propDeep1: 'deepVal1',
+          propDeep2: 42,
+          propDeep3: true,
+          propDeep4: {
+            propDeeper1: 'deeperVal1',
+            propDeeper2: 777,
+            propDeeper3: 'I will survive',
+            propDeepArray: [],
+            propDeepArrayWithObjectMembers: [
+              { foo: 'bar' },
+            ],
+          },
+        },
+        prop3: 'lone survivor',
+      };
+      const obj2 = {
+        prop1: 'newVal1',
+        prop2: {
+          propDeep1: 'newDeepVal1',
+          propDeep2: 84,
+          propDeep3: false,
+          propDeep4: {
+            propDeeper1: 'newDeeperVal1',
+            propDeeper2: 888,
+            propDeepArrayWithObjectMembers: [
+              { foo2: 'bar2' },
+            ],
+          },
+        },
+      };
+      assert.deepEqual(utils.extend(obj1, obj2), {
+        prop1: 'newVal1',
+        prop2: {
+          propDeep1: 'newDeepVal1',
+          propDeep2: 84,
+          propDeep3: false,
+          propDeep4: {
+            propDeeper1: 'newDeeperVal1',
+            propDeeper2: 888,
+            propDeeper3: 'I will survive',
+            propDeepArray: [],
+            propDeepArrayWithObjectMembers: [
+              { foo2: 'bar2' },
+            ],
+          },
+        },
+        prop3: 'lone survivor',
+      });
+    });
+  });
+
   // parent context
 });
