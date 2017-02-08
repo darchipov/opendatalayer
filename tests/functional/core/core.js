@@ -21,7 +21,7 @@ const getODLData = ClientFunction(() => {
 fixture `Core functionality`
     .page('http://localhost:17771/core/core.html');
 
-test('Check DAL data contents', async t => {
+test('check data in ODL', async t => {
   const odlData = await getODLData();
   assert.deepEqual(odlData.site, { id: "test" });
 });
