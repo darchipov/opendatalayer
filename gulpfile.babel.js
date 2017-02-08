@@ -39,6 +39,11 @@ gulp.task('test:package', () => {
     outputPath: 'build',
     baseDir: path.resolve(__dirname),
     plugins: {
+      // explicitly NOT load facebookWCA for testing that case
+      'odl/plugins/facebookWCA': {
+        config: { bla: 'blubb' },
+        rule: false,
+      },
       'odl/plugins/ga': {
         config: {
           gaProdId: 'UA-123456',

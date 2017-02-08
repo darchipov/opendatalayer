@@ -3,7 +3,7 @@ import { assert } from 'chai';
 
 const getODLData = ClientFunction(() => {
   return new Promise((resolve, reject) => {
-    let retries = 100;
+    let retries = 100;  // 100 x 100 ms = 10 seconds
     const checkODL = () => {
       if (typeof window._odl !== 'undefined' && window._odl.isReady()) {
         resolve(window._odl.getData());
@@ -18,10 +18,33 @@ const getODLData = ClientFunction(() => {
   });
 });
 
+const getPluginListFromODL = ClientFunction(() => {
+  return Object.keys(window._odl.plugins);
+});
+
 fixture `Core functionality`
     .page('http://localhost:17771/core/core.html');
 
-test('check data in ODL', async t => {
+test('it should provide the expected data in ODL.data', async t => {
   const odlData = await getODLData();
   assert.deepEqual(odlData.site, { id: "test" });
+});
+
+test('it should load the expected plugins for the pagetype "homepage" (as defined in gulpfile)', async t => {
+  // wait for DAL init first
+  const odlData = await getODLData();
+  const plugins = await getPluginListFromODL();
+
+  assert.deepEqual(plugins, [
+    'odl/plugins/ga',
+    'odl/plugins/marin',
+  ])
+});
+
+test('it should NOT load the plugins that are disabled for the pagetype "homepage" (as defined in gulpfile)', async t => {
+  // wait for DAL init first
+  const odlData = await getODLData();
+  const plugins = await getPluginListFromODL();
+
+  assert.notInclude(plugins, 'odl/plugins/facebookWCA');
 });
