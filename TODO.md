@@ -1,11 +1,9 @@
 # Unsorted TODO list (while missing an issue tracker)
 
 ## mandatory
-- implement method queue API handling in odl/ODL
 - improve functional tests
 - port all functional tests from DAL to ODL
 - remove ODL.collectIdentityDataFromCookies and add ODL.addData to be able to set identity data from outside the core
-- move metaData stuff from odl/ODL to odl/lib/utils
 - stabilize ODL builder
 - test real-world usecase of builder (i.e. when included as npm dependency)
 
