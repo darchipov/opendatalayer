@@ -1,6 +1,6 @@
 /* eslint max-len: ["warn", 200] */
 
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it, beforeEach, afterEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
@@ -15,7 +15,7 @@ describe('odl/ODL', () => {
   let loggerSpy;
   let odlDataMock;
 
-  sinon.log = (message) => console.log(message);
+  sinon.log = message => console.log(message);
 
   beforeEach(() => {
     // spies
@@ -54,40 +54,43 @@ describe('odl/ODL', () => {
     describe('testmode', () => {
       it('should activate testmode if URL contains __odltest__=1', (done) => {
         windowSpy.location.search = '?__odltest__=1';
-        System.import('odl/ODL').then(odl => {
+        System.import('odl/ODL').then((odl) => {
           odl.default.initialize(odlDataMock);
           assert.isTrue(odl.default.inTestMode(), 'odl.inTestMode should return true');
           done();
-        }).catch(err => { console.error(err); });
+        }).catch(err => console.error(err));
       });
 
       it('should set "__odltest__" cookie if URL contains __odltest__=1', (done) => {
         windowSpy.location.search = '?__odltest__=1';
-        System.import('odl/ODL').then(odl => {
+        System.import('odl/ODL').then((odl) => {
           odl.default.initialize(odlDataMock);
           sinon.assert.calledWith(cookieSpy.set, '__odltest__');
           done();
-        }).catch(err => { console.error(err); });
+        }).catch(err => console.error(err));
       });
 
       it('should disable testmode and remove the "__odltest__" cookie if URL contains __odltest__=0', (done) => {
         windowSpy.location.search = '?__odltest__=0';
         cookieSpy.get.returns('1');
-        System.import('odl/ODL').then(odl => {
+        System.import('odl/ODL').then((odl) => {
           odl.default.initialize(odlDataMock);
           sinon.assert.calledWith(cookieSpy.remove, '__odltest__');
           assert.isFalse(odl.default.inTestMode(), 'odl.inTestMode should return false');
           done();
-        }).catch(err => { console.error(err); });
+        }).catch(err => console.error(err));
       });
 
       it('should load a supplied plugin, if: testmode is active, the mode evaluates to "test" and the rule evaluates to "true"', (done) => {
         windowSpy.location.search = '?__odltest__=1';
-        System.import('odl/ODL').then(odl => {
-          odl.default.initialize(odlDataMock, { 'odl/plugins/mock': { test: true, rule: () => true } });
-          sinon.assert.calledWith(windowSpy.require, ['odl/plugins/mock']);
+        System.import('odl/ODL').then((m) => {
+          const odl = m.default;
+          sinon.stub(odl, 'loadPlugin');
+          odl.initialize(odlDataMock, { 'odl/plugins/mock': { test: true, rule: () => true } });
+          sinon.assert.calledWith(odl.loadPlugin, 'odl/plugins/mock');
+          odl.loadPlugin.restore();
           done();
-        }).catch(err => { console.error(err); });
+        }).catch(err => console.error(err));
       });
     }); // testmode
   }); // loadtime
@@ -96,10 +99,10 @@ describe('odl/ODL', () => {
     let odl;
 
     beforeEach((done) => {
-      System.import('odl/ODL').then(m => {
+      System.import('odl/ODL').then((m) => {
         odl = m.default;
         done();
-      }).catch(err => { console.error(err); });
+      }).catch(err => console.error(err));
     });
 
     describe('initialize', () => {
@@ -145,42 +148,54 @@ describe('odl/ODL', () => {
       });
 
       it('should allow overriding plugins using config.plugins', () => {
+        sinon.stub(odl, 'loadPlugin');
         odl.initialize(odlDataMock, { 'should/be/overridden': true }, { plugins: ['my/override'] });
-        sinon.assert.calledWith(windowSpy.require, ['my/override']);
+        sinon.assert.calledWith(odl.loadPlugin, 'my/override');
+        odl.loadPlugin.restore();
       });
 
       it('should accept a list of locally supplied plugins using a fourth parameter', () => {
+        sinon.stub(odl, 'loadPlugin');
         odl.initialize(odlDataMock, {}, {}, ['local/plugin']);
-        sinon.assert.calledWith(windowSpy.require, ['local/plugin']);
+        sinon.assert.calledWith(odl.loadPlugin, 'local/plugin');
+        odl.loadPlugin.restore();
       });
     });
 
     describe('rules', () => {
+      beforeEach(() => {
+        sinon.stub(odl, 'loadPlugin');
+      });
+
+      afterEach(() => {
+        odl.loadPlugin.restore();
+      });
+
       it('should load a supplied plugin, if the rule evaluates to "true"', () => {
         odl.initialize(odlDataMock, { 'odl/plugins/mock': true });
-        sinon.assert.calledWith(windowSpy.require, ['odl/plugins/mock']);
+        sinon.assert.calledWith(odl.loadPlugin, 'odl/plugins/mock');
       });
 
       it('should NOT load a supplied plugin, if the rule evaluates to "false"', () => {
         odl.initialize(odlDataMock, { 'odl/plugins/mock': false });
-        sinon.assert.notCalled(windowSpy.require);
+        sinon.assert.notCalled(odl.loadPlugin);
       });
 
       it('should load a supplied plugin, if the rule supplies a callback function which returns "true"', () => {
         odl.initialize(odlDataMock, { 'odl/plugins/mock': () => true });
-        sinon.assert.calledWith(windowSpy.require, ['odl/plugins/mock']);
+        sinon.assert.calledWith(odl.loadPlugin, 'odl/plugins/mock');
       });
 
       it('should NOT load a supplied plugin, if the rule supplies a callback function which returns "false"', () => {
         odl.initialize(odlDataMock, { 'odl/plugins/mock': () => false });
-        sinon.assert.notCalled(windowSpy.require);
+        sinon.assert.notCalled(odl.loadPlugin);
       });
 
       /* XXX: assoc. positive case is in 'loadtime -> testmode' block, because it needs modified document.location before init */
 
       it('should NOT load a supplied plugin, if: testmode is NOT active, the mode evaluates to "test" and the rule evaluates to "true"', () => {
         odl.initialize(odlDataMock, { 'odl/plugins/mock': { test: true, rule: () => false } });
-        sinon.assert.notCalled(windowSpy.require);
+        sinon.assert.notCalled(odl.loadPlugin);
       });
 
       it('should hand over the current ODL data as first argument, if the rule supplies a callback function', (done) => {
@@ -246,7 +261,7 @@ describe('odl/ODL', () => {
             assert.isTrue(true);
             done();
           } else {
-            tries--;
+            tries -= 1;
             if (tries === 0) {
               assert.isTrue(false);
             } else {

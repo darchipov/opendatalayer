@@ -105,6 +105,16 @@ class ODL {
   }
 
   /**
+   * Wrapper for the previous AMD-based loader. Simply imitates an asynchronous process
+   * here. @TODO: plugin "loading" needs a general rewrite.
+   * @param  {String}  id     the id of the requested plugin
+   * @param  {Function}  callback   a function to execute when the plugin is loaded (gets plugin object as only parameter)
+   */
+  loadPlugin(id, callback) {
+    callback(this.mappings[id]);
+  }
+
+  /**
    * Returns a reference to a specific plugin or null if the plugin doesn't exist.
    * @param  {String}  pluginId     the id of the requested plugin
    * @param  {Function}  callback   (optional) a function to call when the plugin is loaded (gets plugin object as only parameter)
@@ -125,7 +135,7 @@ class ODL {
       // initialize plugin to null so we know it's loading (@FIXME: use object with status property in plugins)
       this.plugins[pluginId] = null;
       // window.require([pluginId], (Plugin) => {
-      ((Plugin) => {
+      this.loadPlugin(pluginId, (Plugin) => {
         logger.log(`plugin '${pluginId}' newly loaded`);
         // if not loaded in the meantime: construct plugin, pass data/config, store reference
         if (!this.plugins[pluginId]) {
@@ -147,7 +157,7 @@ class ODL {
         if (typeof callback === 'function') {
           callback(this.plugins[pluginId]);
         }
-      })(this.mappings[pluginId]);
+      });
     }
     return false;
   }
