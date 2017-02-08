@@ -48,3 +48,7 @@ test('it should NOT load the plugins that are disabled for the pagetype "homepag
 
   assert.notInclude(plugins, 'odl/plugins/facebookWCA');
 });
+
+// TODO:
+// it should install a global method queue
+// it should handle events applied to the global method queue
