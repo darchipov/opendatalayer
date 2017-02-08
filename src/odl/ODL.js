@@ -1,6 +1,7 @@
 import window from './lib/globals/window';
 import Logger from './lib/logger';
 import cookie from './lib/cookie';
+import utils from './lib/utils';
 
 const logger = new Logger('odl/ODL');
 
@@ -223,62 +224,13 @@ class ODL {
     this.broadcastQueue.push([name, data]);
   }
 
-  // extend object with other object
-  static extend(obj1, obj2) {
-    const keys = Object.keys(obj2);
-    for (let i = 0; i < keys.length; i += 1) {
-      const val = obj2[keys[i]];
-      obj1[keys[i]] = ['string', 'number', 'boolean'].indexOf(typeof val) === -1 && typeof val.length === 'undefined' ? ODL.extend(obj1[keys[i]] || {}, val) : val;
-    }
-    return obj1;
-  }
-
-  /**
-   * Scan a given node (or the entire DOM) for metatags containing stringified JSON
-   * and return the parsed and aggregated object. Returns false and logs an error message, if
-   * any error occured (@TODO: use Promise return instead).
-   *
-   * @param {Object}  name  name value of the metatag to be collected
-   * @param {Function}  callback  function to be called for each metadata item (gets passed (optional) error message, element and parsed data object as arguments)
-   * @param {String|HTMLElement}  context  (optional) any CSS selector or HTMLElement, if defined it limits the lookup context to the given element
-   * @param {Object}  data  initial data, gets extended with the collected data
-   */
-  collectMetadata(name, callback, context = null, data = {}) {
-    // get parent element to be queried (or use entire document as default)
-    let parent = window.document;
-    if (context) {
-      parent = typeof context === 'string' ? window.document.querySelector(context) : context;
-      if (!parent) {
-        logger.error(`collectMetadata: context with selector "${context}" not found`);
-        return false;
-      }
-    }
-    // collect metatags and build up data
-    const metatags = parent.querySelectorAll(`meta[name="${name}"]`);
-    if (metatags) {
-      for (let i = 0; i < metatags.length; i += 1) {
-        const el = metatags[i];
-        let o = null;
-        try {
-          o = JSON.parse(el.getAttribute('content'));
-        } catch (e) {
-          callback(`collectMetadata: parse error ${e.message}: ${e}`);
-          break;
-        }
-        ODL.extend(data, o);
-        callback(null, el, o);
-      }
-    }
-    return data;
-  }
-
   /**
    * Scan a given HTMLElement for odl:data-Metatags and update global data accordingly.
    *
    * @param {String|HTMLElement}  node  DOM node or CSS selector to scan for data
    */
   scanForDataMarkup(node = window.document) {
-    return this.collectMetadata(`${this.metaPrefix}data`, () => {}, node, this.globalData);
+    return utils.collectMetadata(`${this.metaPrefix}data`, () => {}, node, this.globalData);
   }
 
   /**
@@ -288,7 +240,7 @@ class ODL {
    * @param {String|HTMLElement}  node  DOM node or CSS selector to scan for events
    */
   scanForEventMarkup(node) {
-    return this.collectMetadata(`${this.metaPrefix}event`, (err, element, obj) => {
+    return utils.collectMetadata(`${this.metaPrefix}event`, (err, element, obj) => {
       if (err) {
         logger.error(err);
         return;

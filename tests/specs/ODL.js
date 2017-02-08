@@ -331,7 +331,6 @@ describe('odl/ODL', () => {
 
     describe('queueing', () => {
       it('should queue a message that is sent BEFORE ODL.initialize and broadcast it later', (done) => {
-        // windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
         odl.broadcast('testevent', { foo: 'bar' });
         odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.getPlugin('odl/plugins/mock', (plugin) => {
@@ -359,71 +358,6 @@ describe('odl/ODL', () => {
           done();
         });
         odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
-      });
-    });
-
-    // @FIXME: put in separate module "odl/lib/utils"
-    describe('utils', () => {
-      describe('collectMetadata', () => {
-        it('should query the global context for metatags with the given name', () => {
-          odl.collectMetadata('odl:data', () => {});
-          sinon.assert.calledWith(windowSpy.document.querySelectorAll, 'meta[name="odl:data"]');
-        });
-
-        it('should accept a different parent context as argument and collect metatags only within that element', () => {
-          const contextSpy = { querySelectorAll: sinon.stub().returns([elementSpy]) };
-          windowSpy.document.querySelector.returns(contextSpy);
-          odl.collectMetadata('odl:data', () => {}, contextSpy);
-          sinon.assert.calledWith(contextSpy.querySelectorAll, 'meta[name="odl:data"]');
-        });
-
-        it('should log an error and return false if context cannot be found', () => {
-          windowSpy.document.querySelector.returns(null);
-          assert.isFalse(odl.collectMetadata('odl:data', () => {}, 'notfound'));
-          sinon.assert.calledWith(loggerSpy.error, sinon.match('collectMetadata: context with selector "notfound" not found'));
-        });
-
-        it('should fire a callback for each collected metatag and pass element and JSON.parse\'d content', () => {
-          const data = [];
-          elementSpy.getAttribute.returns('{"foo":"bar"}');
-          odl.collectMetadata('odl:data', (err, element, content) => data.push(content));
-          assert.deepEqual(data, [{ foo: 'bar' }, { foo: 'bar' }, { foo: 'bar' }]);
-        });
-
-        it('should fire a callback for each collected metatag and pass an error if JSON.parse failed', () => {
-          elementSpy.getAttribute.returns('$this_is_no_json!!');
-          odl.collectMetadata('odl:data', (err) => {
-            assert.include(err, 'collectMetadata: parse error');
-          });
-        });
-
-        it('should return an object with an aggregation of all provided metatags\' data', () => {
-          const makeElement = (data) => {
-            return {
-              getAttribute: sinon.stub().returns(data),
-              hasAttribute: sinon.stub().returns(true),
-              setAttribute: sinon.spy(),
-            };
-          };
-          const element1 = makeElement('{"string1":"hello","number1":42}');
-          const element2 = makeElement('{"string2":"foo","number2":76}');
-          const element3 = makeElement('{"string3":"bar","number3":777}');
-          windowSpy.document.querySelectorAll.returns([element1, element2, element3]);
-          assert.deepEqual(odl.collectMetadata('odl:data', () => {}), {
-            string1: 'hello',
-            string2: 'foo',
-            string3: 'bar',
-            number1: 42,
-            number2: 76,
-            number3: 777,
-          });
-        });
-
-        // extend
-
-
-        // parent context
-
       });
     });
   });
