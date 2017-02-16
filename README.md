@@ -23,13 +23,15 @@ It is important to note that *ODL is no tag manager* in a classical way. However
 -----------------------
 
 ## General concept
-Usually you would expect a Quickstart section at this point? Agreed, but it is absolutely
-mandatory to understand the basic concept of the ODL before moving to the [Usage](#usage)
-and [Implementation](#implementation) details.
+Usually you would expect a Quickstart section at this point. Instead, we first describe the basic
+concept of the ODL before moving to [Usage](#usage) and [Implementation](#implementation) details.
+It is really helpful to first get the big picture and understand the problems that are addressed
+by the ODL approach.
 
 ### What is the problem?
-What is the problem with common tag managagement systems? Any third-party vendor recommends me to
-use one and I don't have to care for all that marketing stuff.
+You probably ask: What is the problem with common tag managagement systems? Any third-party vendor
+recommends me to use one and I don't have to care for all that marketing stuff myself. I really
+don't care about that type of thing.
 
 #### Short answer
 Unless you manage the tags yourself, you - the developer - are completely overruled

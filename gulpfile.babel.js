@@ -30,8 +30,14 @@ gulp.task('lint', () => {
     .pipe(eslint.failOnError());
 });
 
+// @TODO: build the library (i.e. transpile everything and save it to ./dist)
+gulp.task('build', () => {
+  gulp.src('src/**/*.js')
+    .pipe(gulp.dest('dist'));
+});
+
 // use local ODL builder to build and package ODL with our testing plugins
-gulp.task('test:package', () => {
+gulp.task('test:package', /* ['build'], */ () => {
   const odlBuilder = require('./src/odl/builder');
 
   // TEST: example ODL builder configuration for testing

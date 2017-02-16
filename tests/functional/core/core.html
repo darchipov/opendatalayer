@@ -1,6 +1,6 @@
 <html>
 <head>
-  <script src="/.tmp/opendatalayer.js" type="text/javascript" async></script>
+  <script src="/.tmp/odl-bundle.js" type="text/javascript" async></script>
 </head>
 <body>
 Testbed for ODL integration
@@ -26,9 +26,7 @@ Testbed for ODL integration
  * is as expected.
  */
 window._odlq = window._odlq || [];
-window._odlq.push(['onLoad', function (odl) {
-  odl.broadcast('foo', 'bar');
-}]);
+window._odlq.push(['broadcast', 'foo', 'bar']);
 </script>
 
 </body>

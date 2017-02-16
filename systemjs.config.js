@@ -3,7 +3,7 @@ System.config({
   defaultJSExtensions: false,
   transpiler: 'plugin-babel',
   map: {
-    odl: 'src/odl',
+    odl: './src/odl',
     'plugin-babel': './node_modules/systemjs-plugin-babel/plugin-babel',
     'systemjs-babel-build': './node_modules/systemjs-plugin-babel/systemjs-babel-node.js',
   },

@@ -24,7 +24,6 @@ describe('odl/ODL', () => {
     };
     windowSpy = {
       location: { search: '' },
-      require: sinon.spy(),
       document: {
         querySelector: sinon.stub().returns(elementSpy),
         querySelectorAll: sinon.stub().returns([elementSpy, elementSpy, elementSpy]),
@@ -224,11 +223,6 @@ describe('odl/ODL', () => {
     });
 
     describe('load/get plugins', () => {
-      beforeEach(() => {
-        // fake require call that always returns our ODLPluginMock
-        windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
-      });
-
       it('should load a given plugin by its name [odl/plugins/mock]', (done) => {
         // init without plugins, then load plugin manually
         odl.initialize(odlDataMock, {}, {}, [], { 'odl/plugins/mock': odlPluginMock });
@@ -346,8 +340,6 @@ describe('odl/ODL', () => {
       });
 
       it('should queue a message that is sent AFTER initialize and BEFORE plugin load and broadcast it later', (done) => {
-        // artificially delay require calls
-        windowSpy.require = (pluginId, callback) => setTimeout(() => callback(odlPluginMock), 250);
         // call initialize and broadcast event before plugin is loaded
         odl.initialize(odlDataMock, { 'odl/plugins/mock': true }, {}, [], { 'odl/plugins/mock': odlPluginMock });
         odl.broadcast({ name: 'testevent', data: { foo: 'bar' } });
@@ -358,7 +350,6 @@ describe('odl/ODL', () => {
       });
 
       it('should queue a getPlugin call that is sent BEFORE ODL.initialize and process it later', (done) => {
-        windowSpy.require = (pluginId, callback) => { callback(odlPluginMock); };
         odl.getPlugin('odl/plugins/mock', (plugin) => {
           assert.equal(plugin.__type__, 'Mock');
           done();
