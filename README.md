@@ -117,15 +117,15 @@ frontend build pipeline. The main reason to change the configuration after the i
 when you add or remove plugins.
 
 ### 1. Install the module
-The easiest way to get started is by installing the ODL package, the [ODL Builder](#https://gitlab.gkh-setu.de/bsna/opendatalayer-builder) and any plugins
-you need via npm:
+The easiest way to get started is by installing the ODL package, the [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder)
+and any plugins you need via npm:
 
 ```
 npm install opendatalayer opendatalayer-builder opendatalayer-plugin-google-analytics --save-dev
 ```
 
 ### 2. Configure and build the ODL script
-ODL comes with its own build tool called [ODL Builder](#https://gitlab.gkh-setu.de/bsna/opendatalayer-builder).
+ODL comes with its own build tool called [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder).
 You can use it to create your personallized ODL build by passing
 in your individual configuration (read more about the [plugin configuration](#plugin-configuration) and
 [ODL builder options](#) in the respective sections). In most cases you would include the
@@ -133,7 +133,7 @@ following code somewhere within your application's build process (e.g. gruntfile
 gulpfile):
 
 ```javascript
-var odlBuilder = require('odl/builder');
+var odlBuilder = require('opendatalayer-builder');
 
 odlBuilder.bundle({
   outputPath: 'build',
@@ -158,8 +158,13 @@ However, it is still possible to dynamically load plugins through ODL's script A
 one could even build a classical, UI-driven tag management system on top of the ODL standard.
 
 ### 3. Include ODL in your website
-You can include ODL via an asynchronous script tag and then, if required, immediately access the API using the
-method queue pattern.
+You can simply include ODL via an asynchronous script tag and then immediately access the API using the
+method queue pattern. Though, under normal circumstances there should be no need to
+directly access the ODL via the script API, unless you have some very special requirements.
+ODL is designed to be completely accessible through `data-odl-*` attributes (as described in
+detail in the [Events documentation](#simplified-markup-notation)). Also the call to
+`odl.initialize` is intentionally left out here. When using [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder)
+the ODL is automatically configured and initialized behind the scenes.
 
 ```html
 <script src="/some/path/to/my-odl-bundle.js" type="text/javascript" async></script>
@@ -167,7 +172,6 @@ method queue pattern.
 (function() {
   window._odlq = window._odlq || [];
   window._odlq.push(['broadcast', 'my-event', { foo: 'bar' }]);
-  }]);
 }());
 </script>
 ```
@@ -182,12 +186,6 @@ require(['/some/path/to/mywebsite-odl.1.123.js'], function (odl) {
   odl.broadcast('foo', 'bar');
 });
 ```
-It is important to mention that - under normal circumstances - there should be no need to
-directly access the ODL via it's script API, unless you have some very special requirements.
-ODL is designed to be completely accessible via `data-odl-*` attributes (as described in
-detail in the [Events documentation](#simplified-markup-notation)). Also the call to
-`odl.initialize` is intentionally left out here. When using [ODL Builder](#https://gitlab.gkh-setu.de/bsna/opendatalayer-builder)
-the ODL is automatically configured and initialized behind the scenes.
 
 All [API methods](#) are available either through the AMD module or the global `window._odlq`
 method queue ([more details about the method queue pattern](http://www.lognormal.com/blog/2012/12/12/the-script-loader-pattern/#the_method_queue_pattern)).
@@ -510,18 +508,19 @@ tracking of video and audio data.
 -----------------------
 
 ## Road to 1.0
+- revive functional tests which broke by separating opendatalayer-builder
 - cleanup data model: strip deprecated fields, remove inheritance
-- create builder tool (based on systemjs-builder?)
+- testUtils module that provides mocks to unit tests
+- move remaining datatypes to Avro model files
 - Refactor ODL core implementation to a Promise-driven approach
 - Support dynamic bundling in ODL builder to split the package into smaller
   files (e.g. one global file, one for article detail page, one for order completion page) to
   save ressources
-- testUtils module that provides mocks to unit tests
 
 ## Future plans
 - Create a crawler tool that scans an entire website's markup and validates the included
   ODL metatags against the associated Avro model files
-- Provide a gulp-opendatalayer plugin
+- Provide a gulp-opendatalayer plugin (may be obsolete due to Promise-driven `odlBuilder.bundle()`)
 - Provide a grunt-opendatalayer plugin
 - Currently ODL is heavily focused on e-commerce websites, we should add more universal types to
   support more content-driven websites, as we have some more real use cases and/or feedback
