@@ -1,15 +1,15 @@
 import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../../systemjs.config';
-import mockModule from './../../_mockModule';
 
 describe('odl/lib/cookie', () => {
   let [cookieHelper, windowSpy] = [];
 
   beforeEach(() => {
     windowSpy = { document: { cookie: '' } };
-    mockModule('odl/lib/globals/window', windowSpy);
+    mockModule(System, 'odl/lib/globals/window', windowSpy);
     System.delete(System.normalizeSync('odl/lib/cookie'));
     return System.import('odl/lib/cookie').then((m) => {
       cookieHelper = m.default;

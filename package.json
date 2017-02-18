@@ -48,6 +48,7 @@
     "sinon": "^1.17.0",
     "systemjs": "^0.19.41",
     "systemjs-builder": "^0.15.34",
+    "systemjs-mock-module": "^0.1.0",
     "systemjs-plugin-babel": "0.0.17",
     "testcafe": "^0.12.1",
     "testcafe-browser-provider-phantomjs": "^1.0.0"

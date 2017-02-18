@@ -2,8 +2,8 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../../systemjs.config';
-import mockModule from './../../_mockModule';
 import * as odlDataTypes from './../../mocks/odlDataTypes';
 
 describe('odl/plugins/facebookWCA', () => {
@@ -35,14 +35,14 @@ describe('odl/plugins/facebookWCA', () => {
     // spies
     loggerSpy = { log: sinon.spy(), warn: sinon.spy() };
     // register mocks
-    mockModule('odl/lib/globals/window', window);
-    mockModule('odl/lib/logger', () => loggerSpy);
+    mockModule(System, 'odl/lib/globals/window', window);
+    mockModule(System, 'odl/lib/logger', () => loggerSpy);
     // clear module first
     System.delete(System.normalizeSync('odl/plugins/facebookWCA'));
-    System.import('odl/plugins/facebookWCA').then(m => {
+    System.import('odl/plugins/facebookWCA').then((m) => {
       Service = m.default;
       done();
-    }).catch(err => { console.error(err); });
+    }).catch(err => console.error(err));
   });
 
   it('should append the facebook pixel to the DOM', () => {

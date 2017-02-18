@@ -2,8 +2,8 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../../systemjs.config';
-import mockModule from './../../_mockModule';
 
 describe('odl/lib/utils', () => {
   let [utils, elementSpy, windowSpy, loggerSpy] = [];
@@ -28,8 +28,8 @@ describe('odl/lib/utils', () => {
     };
     loggerSpy = { log: sinon.spy(), warn: sinon.spy(), error: sinon.spy() };
     // register mocks
-    mockModule('odl/lib/globals/window', windowSpy);
-    mockModule('odl/lib/logger', () => loggerSpy);
+    mockModule(System, 'odl/lib/globals/window', windowSpy);
+    mockModule(System, 'odl/lib/logger', () => loggerSpy);
     // clear module first
     System.delete(System.normalizeSync('odl/lib/utils'));
     return System.import('odl/lib/utils').then((m) => {

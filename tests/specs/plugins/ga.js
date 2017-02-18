@@ -3,8 +3,8 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../../systemjs.config';
-import mockModule from './../../_mockModule';
 import * as odlDataTypes from './../../mocks/odlDataTypes';
 import domMock from './../../mocks/domMockES6';
 
@@ -25,8 +25,8 @@ describe('odl/plugins/ga', () => {
       mapPagenamesToEnglish: false,
     };
     // register mocks
-    mockModule('odl/lib/globals/window', windowSpy);
-    mockModule('odl/lib/logger', () => loggerSpy);
+    mockModule(System, 'odl/lib/globals/window', windowSpy);
+    mockModule(System, 'odl/lib/logger', () => loggerSpy);
     // clear module first
     System.delete(System.normalizeSync('odl/plugins/ga'));
     System.import('odl/plugins/ga').then((m) => {

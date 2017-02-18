@@ -2,8 +2,8 @@ import { describe, it, beforeEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../../systemjs.config';
-import mockModule from './../../_mockModule';
 
 describe('odl/lib/domHelper', () => {
   let [domHelper, windowSpy, elementSpy] = [];
@@ -25,7 +25,7 @@ describe('odl/lib/domHelper', () => {
     // wrap spies around DOM mock
     sinon.spy(windowSpy.document, 'createElement');
     // register mocks
-    mockModule('odl/lib/globals/window', windowSpy);
+    mockModule(System, 'odl/lib/globals/window', windowSpy);
     // clear domHelper first, then import
     System.delete(System.normalizeSync('odl/lib/domHelper'));
     return System.import('odl/lib/domHelper').then((m) => {

@@ -4,8 +4,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import System from 'systemjs';
+import mockModule from 'systemjs-mock-module';
 import './../../systemjs.config';
-import mockModule from './../_mockModule';
 import odlPluginMock from './../mocks/ODLPluginMock';
 
 describe('odl/ODL', () => {
@@ -41,11 +41,11 @@ describe('odl/ODL', () => {
       user: { id: null },
     };
     // register mocks
-    mockModule('odl/lib/globals/window', windowSpy);
-    mockModule('odl/lib/cookie', cookieSpy);
-    mockModule('odl/lib/logger', () => loggerSpy);
-    mockModule('odl/lib/utils', utilsSpy);
-    mockModule('odl/plugins/mock', odlPluginMock);
+    mockModule(System, 'odl/lib/globals/window', windowSpy);
+    mockModule(System, 'odl/lib/cookie', cookieSpy);
+    mockModule(System, 'odl/lib/logger', () => loggerSpy);
+    mockModule(System, 'odl/lib/utils', utilsSpy);
+    mockModule(System, 'odl/plugins/mock', odlPluginMock);
     // clear module first
     System.delete(System.normalizeSync('odl/ODL'));
   });
