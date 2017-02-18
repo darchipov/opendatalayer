@@ -25,9 +25,6 @@ export default class Logger {
     if (!moduleName) {
       throw new Error('no module name specified');
     }
-    if (moduleName.indexOf('/') === -1) {
-      throw new Error('module name must contain a slash, e.g. [odl/foo/bar]');
-    }
     this.moduleName = moduleName;
     this.logLevel = logLevel;
     this._setAllowedMethods(logLevel);
