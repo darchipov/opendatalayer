@@ -1,4 +1,4 @@
-[![build status](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder/badges/master/build.svg)](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder/commits/master)
+[![build status](https://gitlab.gkh-setu.de/bsna/opendatalayer/badges/master/build.svg)](https://gitlab.gkh-setu.de/bsna/opendatalayer/commits/master)
 
 # OpenDataLayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
