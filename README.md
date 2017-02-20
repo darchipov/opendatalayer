@@ -1,4 +1,6 @@
-# Open Data Layer
+[![build status](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder/badges/master/build.svg)](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder/commits/master)
+
+# OpenDataLayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
 between the frontend space (i.e. a website's frontend markup) and any third parties
 (e.g. analytics or affiliate tools). It's ultimate goal is to *make third-party integration
@@ -510,6 +512,7 @@ tracking of video and audio data.
 ## Road to 1.0
 - revive functional tests which broke by separating opendatalayer-builder
 - cleanup data model: strip deprecated fields, remove inheritance
+- fix logger issue (global flag from gk.toggle missing in ODL)
 - testUtils module that provides mocks to unit tests
 - move remaining datatypes to Avro model files
 - Refactor ODL core implementation to a Promise-driven approach
