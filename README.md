@@ -1,6 +1,6 @@
-> Please note that this project is still in the process of being prepared and polished
+> **Please note that this project is still in the process of being prepared and polished
 > to become a standalone tool and project. Any documentation might be incomplete and/or
-> misleading. So no complains, you've been warned ;-) ..
+> misleading. So no complains, you've been warned ;-) ..**
 
 # OpenDataLayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
