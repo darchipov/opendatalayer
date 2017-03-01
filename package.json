@@ -1,6 +1,6 @@
 {
   "name": "opendatalayer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Rico Pfaus <rico.pfaus@kaufhof.de>",
   "description": "OpenDataLayer - open-source data layer to standardize common data communication in frontend space",
   "directories": {
