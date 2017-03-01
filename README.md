@@ -1,4 +1,6 @@
-[![build status](https://gitlab.gkh-setu.de/bsna/opendatalayer/badges/master/build.svg)](https://gitlab.gkh-setu.de/bsna/opendatalayer/commits/master)
+> Please note that this project is still in the process of being prepared and polished
+> to become a standalone tool and project. Any documentation might be incomplete and/or
+> misleading. So no complains, you've been warned ;-) ..
 
 # OpenDataLayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
@@ -10,7 +12,6 @@ control of their frontend code.
 The system has been developed for the [online shop of Galeria Kaufhof](http://www.kaufhof.de),
 the leading german warehouse company and part of the HBC group, and is in use for almost three years
 now. And, since we are all convinced that this is a good approach, we decided to open-source it.
-[Read more about reasoning and benefits](#) in the associated blog article.
 
 It is important to note that *ODL is no tag manager* in a classical way. However, it *can* (and
 *should*) be used as a replacement for external tag management systems.
@@ -78,7 +79,7 @@ within a website's markup. You provide special `<meta>`-tags with the `name` att
 The `content` attribute then contains a JSON-formatted object with any information to be supplied, based
 on the defined [ODL model](#data-types).
 
-As a minimum requirement each page has to define a metatag with an [ODLGlobalData](model/ODLGlobalData.avdl)
+As a minimum requirement each page has to define a metatag with an ODLGlobalData](https://github.com/ryx/opendatalayer-model-default/model/ODLGlobalData.avdl)
 object, as illustrated in the following example:
 
 ```html
@@ -119,7 +120,7 @@ frontend build pipeline. The main reason to change the configuration after the i
 when you add or remove plugins.
 
 ### 1. Install the module
-The easiest way to get started is by installing the ODL package, the [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder)
+The easiest way to get started is by installing the ODL package, the [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder)
 and any plugins you need via npm:
 
 ```
@@ -127,7 +128,7 @@ npm install opendatalayer opendatalayer-builder opendatalayer-plugin-google-anal
 ```
 
 ### 2. Configure and build the ODL script
-ODL comes with its own build tool called [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder).
+ODL comes with its own build tool called [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder).
 You can use it to create your personallized ODL build by passing
 in your individual configuration (read more about the [plugin configuration](#plugin-configuration) and
 [ODL builder options](#) in the respective sections). In most cases you would include the
@@ -165,7 +166,7 @@ method queue pattern. Though, under normal circumstances there should be no need
 directly access the ODL via the script API, unless you have some very special requirements.
 ODL is designed to be completely accessible through `data-odl-*` attributes (as described in
 detail in the [Events documentation](#simplified-markup-notation)). Also the call to
-`odl.initialize` is intentionally left out here. When using [ODL Builder](https://gitlab.gkh-setu.de/bsna/opendatalayer-builder)
+`odl.initialize` is intentionally left out here. When using [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder)
 the ODL is automatically configured and initialized behind the scenes.
 
 ```html
@@ -405,7 +406,7 @@ A model represents the structural "glue" between the ODL and the embedding websi
 definitions used for passing data to the ODL. Additionally, it contains a JSON-based mapping that describes the data that has
 to be provided per pagetype.
 
-A website that implements the ODL has to obey one specific model (either [the default](https://gitlab.gkh-setu.de/bsna/opendatalayer-model-default) or any custom one) so the ODL and its
+A website that implements the ODL has to obey one specific model (either [the default](https://www.npmjs.com/package/opendatalayer-model-default) or any custom one) so the ODL and its
 tools (e.g. Builder and Validator) know where to expect which kind of data. Think of the model as a contract between a
 website and the ODL.
 
@@ -423,7 +424,9 @@ definitions is located in the respective model's repository.
 
 -----------------------
 
-## Road to 1.0
+## Roadmap
+
+### Road to 1.0
 - revive functional tests which broke by separating opendatalayer-builder
 - cleanup data model: strip deprecated fields, remove inheritance
 - fix logger issue (global flag from gk.toggle missing in ODL)
@@ -433,7 +436,7 @@ definitions is located in the respective model's repository.
   files (e.g. one global file, one for article detail page, one for order completion page) to
   save ressources
 
-## Future plans
+### Future plans
 - Create a crawler tool that scans an entire website's markup and validates the included
   ODL metatags against the associated Avro model files
 - Provide a gulp-opendatalayer plugin (may be obsolete due to Promise-driven `odlBuilder.bundle()`)
