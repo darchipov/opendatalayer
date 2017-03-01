@@ -6,6 +6,10 @@
   "directories": {
     "test": "tests"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryx/opendatalayer"
+  },
   "scripts": {
     "build": "./node_modules/.bin/rollup -c",
     "test": "./node_modules/.bin/mocha tests/specs  --require babel-register --recursive --color",
