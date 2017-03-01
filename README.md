@@ -412,9 +412,15 @@ A website that implements the ODL has to obey one specific model (either [the de
 tools (e.g. Builder and Validator) know where to expect which kind of data. Think of the model as a contract between a
 website and the ODL.
 
-The default model is designed for e-commerce-driven websites (as ODL is originally built and developed
-within an e-commerce website) and contains a lot of product- and order-specific types. However, due to the modular concept
-it is easily possible to use ODL for any other website by simply using another model.
+Inside a plugin you can then use `odl.model` to access properties of the model and test against
+identifiers defined inside the model like in the following example. This offers a great flexibility and
+allows to write plugins that work on different websites with completely differently named pagetypes.
+```javascript
+// if the current pagetype matches the pagetype for the searchResult page as defined in the model
+if (data.page.type === odl.model.pagetype.searchResult.id) {
+  // do stuff specific for the search result page
+}
+```
 
 ### What are "types"?
 Because of the non-statically-typed nature of Javascript and JSON the ODL implements several virtual data
