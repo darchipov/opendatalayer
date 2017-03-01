@@ -2,6 +2,8 @@
 > to become a standalone tool and project. Any documentation might be incomplete and/or
 > misleading. So no complains, you've been warned ;-) ..**
 
+[![Build Status](https://travis-ci.org/ryx/opendatalayer.svg?branch=master)](https://travis-ci.org/ryx/opendatalayer)
+
 # OpenDataLayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
 between the frontend space (i.e. a website's frontend markup) and any third parties
