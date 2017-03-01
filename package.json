@@ -2,7 +2,7 @@
   "name": "opendatalayer",
   "version": "0.0.1",
   "author": "Rico Pfaus <rico.pfaus@kaufhof.de>",
-  "description": "OpenDataLayer - standardize common data communication",
+  "description": "OpenDataLayer - open-source data layer to standardize common data communication in frontend space",
   "directories": {
     "test": "tests"
   },
