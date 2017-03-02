@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/ryx/opendatalayer.svg?branch=master)](https://travis-ci.org/ryx/opendatalayer)
 
-# OpenDataLayer
+# OpenDatalayer
 The Open Data Layer (ODL) is a concept designed to standardize common data communication
 between the frontend space (i.e. a website's frontend markup) and any third parties
 (e.g. analytics or affiliate tools). It's ultimate goal is to *make third-party integration
@@ -68,9 +68,9 @@ architecture and can then access the data in the ODL.
 The idea as such is quite common for tag managagement systems but any vendor uses his/her own
 implementation, based on more or less flexible data models.
 
-TODO: more details here, maybe some pics
+This flow diagram illustrates the basic concepts of the OpenDatalayer:
+![OpenDatalayer flow  diagram](https://cloud.githubusercontent.com/assets/476417/23527316/c60179a0-ff95-11e6-8447-f3b2a0cb6c35.png)
 
------------------------
 
 ## Implementation
 TODO: Describe general flow of data, events etc.
@@ -112,7 +112,6 @@ You can use the following metatag for that, which completely stops the initializ
 <meta name="odl:disable" content="true" />
 ```
 
------------------------
 
 ## Usage
 The following steps should give a brief and easy-to-understand summary of the integration of ODL
@@ -122,7 +121,7 @@ frontend build pipeline. The main reason to change the configuration after the i
 when you add or remove plugins.
 
 ### 1. Install the module
-The easiest way to get started is by installing the ODL package, the [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder)
+The easiest way to get started is by installing the ODL package, the [ODL Builder](https://github.com/ryx/opendatalayer-builder)
 and any plugins you need via npm:
 
 ```
@@ -130,7 +129,7 @@ npm install opendatalayer opendatalayer-builder opendatalayer-plugin-google-anal
 ```
 
 ### 2. Configure and build the ODL script
-ODL comes with its own build tool called [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder).
+ODL comes with its own build tool called [ODL Builder](https://github.com/ryx/opendatalayer-builder).
 You can use it to create your personallized ODL build by passing
 in your individual configuration (read more about the [plugin configuration](#plugin-configuration) and
 [ODL builder options](#) in the respective sections). In most cases you would include the
@@ -168,7 +167,7 @@ method queue pattern. Though, under normal circumstances there should be no need
 directly access the ODL via the script API, unless you have some very special requirements.
 ODL is designed to be completely accessible through `data-odl-*` attributes (as described in
 detail in the [Events documentation](#simplified-markup-notation)). Also the call to
-`odl.initialize` is intentionally left out here. When using [ODL Builder](https://www.npmjs.com/package/opendatalayer-builder)
+`odl.initialize` is intentionally left out here. When using [ODL Builder](https://github.com/ryx/opendatalayer-builder)
 the ODL is automatically configured and initialized behind the scenes.
 
 ```html
@@ -181,7 +180,7 @@ the ODL is automatically configured and initialized behind the scenes.
 </script>
 ```
 
-### 4. Access the OpenDataLayer API at runtime
+### 4. Access the OpenDatalayer API at runtime
 If you use an AMD-loader (like e.g. [requirejs](http://requirejs.org)) you can easily import
 the module using asynchronous module definition syntax. Then you can directly access the API
 via the module's exported methods:
@@ -209,8 +208,6 @@ require(['opendatalayer'], function (odl) {
 })
 ```
 
-
------------------------
 
 ## Plugins
 The ODL provides a modular architecture where any additional logic is encapsulated
@@ -244,8 +241,6 @@ overrides for this to work.
   }
 }' />
 ```
-
------------------------
 
 ## Events
 The ODL provides two different types of events: rendertime and runtime
@@ -399,8 +394,6 @@ odl.broadcast('media-played-75', {
 });
 ```
 
------------------------
-
 ## Models
 
 ### What is a "model" in the context of the ODL?
@@ -408,7 +401,7 @@ A model represents the structural "glue" between the ODL and the embedding websi
 definitions used for passing data to the ODL. Additionally, it contains a JSON-based mapping that describes the data that has
 to be provided per pagetype.
 
-A website that implements the ODL has to obey one specific model (either [the default](https://www.npmjs.com/package/opendatalayer-model-default) or any custom one) so the ODL and its
+A website that implements the ODL has to obey one specific model (either [the default](https://github.com/ryx/opendatalayer-model-default) or any custom one) so the ODL and its
 tools (e.g. Builder and Validator) know where to expect which kind of data. Think of the model as a contract between a
 website and the ODL.
 
@@ -430,7 +423,6 @@ The ODL datamodel is described using the [AVRO description language](https://avr
 this allows for machine processing and automation of validation processes. The full list of type
 definitions is located in the respective model's repository.
 
------------------------
 
 ## Roadmap
 
