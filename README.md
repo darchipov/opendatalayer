@@ -63,13 +63,10 @@ any more.
 ### How does ODL work?
 The backend applications then render specific markup that gets analyzed and aggregated by the ODL.
 External plugins (econda, tag managers, affiliates, ..) can be integrated using a modularized
-architecture and can then access the data in the ODL.
+architecture and can then access the data in the ODL. The idea as such is quite common for tag
+managagement systems but any vendor uses his/her own implementation, based on more or less flexible data models.
 
-The idea as such is quite common for tag managagement systems but any vendor uses his/her own
-implementation, based on more or less flexible data models.
-
-This flow diagram illustrates the basic concepts of the OpenDatalayer:
-![OpenDatalayer flow  diagram](https://cloud.githubusercontent.com/assets/476417/23527316/c60179a0-ff95-11e6-8447-f3b2a0cb6c35.png)
+![OpenDatalayer flow  diagram](https://cloud.githubusercontent.com/assets/476417/23527702/4ba5deec-ff97-11e6-8ece-b4f186698fa2.png)
 
 
 ## Implementation
